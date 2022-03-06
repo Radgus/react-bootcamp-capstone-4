@@ -1,15 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import shoppingCar from '../resources/images/shopping-icon.gif';
+import shoppingCarIcon from '../resources/images/shopping-icon-2.png';
+import logo from '../resources/images/logo-9.PNG';
+import searchIcon from '../resources/images/search-icon-5.png';
 
 const Section = styled.section`
-  height: 7rem;
+  margin: 3rem 0;
+  padding: 1rem 0;
   header {
-    height: 100%;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     .header__section {
-      width: 33%;
+      width: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -21,11 +24,63 @@ const Section = styled.section`
     .left {
       justify-content: left;
     }
+    .logo {
+      order: 1;
+    }
+    .search {
+      order: 3;
+      width: 100%;
+    }
+    .shopping {
+      order: 2;
+    }
+    @media (min-width: 450px) {
+      .logo {
+        width: 25%;
+      }
+      .search {
+        order: 2;
+        width: 50%
+      }
+      .shopping {
+        order: 3;
+        width: 25%
+      }
+    }
   }
 `;
 
 const Img = styled.img`
-  height: 6rem;
+  height: 3.5rem;
+`;
+
+const Logo = styled.img`
+  height: 4rem;
+`;
+
+const Search = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: lightgrey;
+  border-radius: 5px;
+  margin: 1.2rem 0;
+  padding: 0 3% 0 7.5%;
+  .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 2.5rem;
+    }
+  }
+  input {
+    width: 100%;
+    height: 3rem;
+    background-color: transparent;
+    border: none;
+    outline: none;
+  }
 `;
 
 const Header = () => {
@@ -34,16 +89,21 @@ const Header = () => {
     <Section>
       <header>
 
-        <div className="header__section left">
-          <h1>Soy un LOGO</h1>
+        <div className="header__section left logo">
+          <Logo src={logo} alt="logo" />
         </div>
 
-        <div className="header__section">
-          <h1>Soy un LOGO</h1>
+        <div className="header__section search">
+           <Search>
+            <input type="text" placeholder='search...'/>
+            <div className="logo">
+              <img src={searchIcon} alt="searchIcon" />
+            </div>
+          </Search>
         </div>
 
-        <div className="header__section right">
-          <Img src={shoppingCar} alt="shoppingCar" />
+        <div className="header__section right shopping">
+          <Img src={shoppingCarIcon} alt="shoppingCarIcon" />
         </div>
 
       </header>
