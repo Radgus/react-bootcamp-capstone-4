@@ -1,7 +1,12 @@
 import styled from 'styled-components';
 
 const Section = styled.section`
-  margin: 2rem 0;
+  margin-top: 2rem;
+  background-color: lightgray;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   p {
     text-align: center;
     font-size: 1.2rem;
