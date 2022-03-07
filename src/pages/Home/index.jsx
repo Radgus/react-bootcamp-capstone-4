@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { useFeaturedBanners } from '../../utils/hooks/useFeaturedBanners';
 
 const Slider = styled.div`
-  height: 30vh;
-  background-color: grey;
+  height: 28vh;
   position: relative;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  @media (min-width: 550px) {
+    background-color: lightgrey;
+  }
 `;
 
 const SliderButton = styled.div`
@@ -52,25 +57,16 @@ const Displacer = styled.div`
 const Slide = styled.div`
   min-width: 100%;
   height: 100%;
-  background-color: ${props => props.bgcolor ? props.bgcolor : 'pink'};
 `;
 
-const Dots = styled.div`
-  width: 30%;
-  position: absolute;
-  bottom: 10%;
-  left: 35%;
-  display: flex;
-  justify-content: space-between;
-  .dot {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    border: 0.2rem solid black;
-  }
+const Img = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 `;
 
 const Home = () => {
+  const featuredBanners = useFeaturedBanners().data?.results;
 
   const handleSlider = (moveDirection) => {
     const contentSlider = document.getElementById('contentSlider');
@@ -93,18 +89,15 @@ const Home = () => {
 
         <Content >
           <Displacer id='contentSlider'>
-            <Slide bgcolor='aqua'>Slide 1</Slide>
-            <Slide bgcolor='green'>Slide 2</Slide>
-            <Slide bgcolor='yellow'>Slide 3</Slide>
+            {
+              featuredBanners?.map((item) => 
+                <Slide key={item.id}>
+                  <Img src={item.data.main_image.url} alt="" />
+                </Slide>
+              )
+            }
           </Displacer>
         </Content>
-
-        <Dots>
-          <div className="dot"/>
-          <div className="dot"/>
-          <div className="dot"/>
-        </Dots>
-
 
         <SliderButton isRight onClick={() => handleSlider('rigth')}>
           <div className="arrow right"/>
