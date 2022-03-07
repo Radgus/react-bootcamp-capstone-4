@@ -3,18 +3,13 @@ import styled from 'styled-components';
 import { useFeaturedBanners } from '../../utils/hooks/useFeaturedBanners';
 
 const Slider = styled.div`
-  height: 28vh;
   position: relative;
-  background-color: transparent;
   border-radius: 0.5rem;
-  @media (min-width: 550px) {
-    background-color: lightgrey;
-  }
 `;
 
 const SliderButton = styled.div`
-  width: 3rem;
-  height: 6rem;
+  width: 2rem;
+  height: 4rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,30 +33,28 @@ const SliderButton = styled.div`
     transform: rotate(135deg);
     right: 0.3rem;
   }
-`;
-
-const Content = styled.div`
-  width: 100%;
-  height: 100%;
+  @media (min-width: 320px) {
+    width: 3rem;
+    height: 6rem;
+  }
 `;
 
 const Displacer = styled.div`
   width: 100%;
-  height: 100%;
   display: flex;
-  overflow: hidden;
   scroll-behavior: smooth;
   overflow-x: scroll;
+  ::-webkit-scrollbar {
+  display: none;
+  }
 `;
 
 const Slide = styled.div`
   min-width: 100%;
-  height: 100%;
 `;
 
 const Img = styled.img`
   width: 100%;
-  height: 100%;
   object-fit: contain;
 `;
 
@@ -87,17 +80,15 @@ const Home = () => {
           <div className="arrow left"/>
         </SliderButton>
 
-        <Content >
-          <Displacer id='contentSlider'>
-            {
-              featuredBanners?.map((item) => 
-                <Slide key={item.id}>
-                  <Img src={item.data.main_image.url} alt="" />
-                </Slide>
-              )
-            }
-          </Displacer>
-        </Content>
+        <Displacer id='contentSlider'>
+          {
+            featuredBanners?.map((item) => 
+              <Slide key={item.id}>
+                <Img src={item.data.main_image.url} alt="" />
+              </Slide>
+            )
+          }
+        </Displacer>
 
         <SliderButton isRight onClick={() => handleSlider('rigth')}>
           <div className="arrow right"/>

@@ -17,6 +17,8 @@ body {
   padding: 0 8%;
   background-color: #FEFBE9;
   /* color: #472E01; */
+  max-width: 1250px;
+  margin: 0 auto;
 }
 
 code {
