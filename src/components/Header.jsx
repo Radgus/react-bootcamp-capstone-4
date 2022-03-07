@@ -90,7 +90,7 @@ const Header = () => {
       <header>
 
         <div className="header__section left logo">
-          <Logo src={logo} alt="logo" />
+          <Logo src={logo} alt="logoCommerce" />
         </div>
 
         <div className="header__section search">
