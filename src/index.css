@@ -14,9 +14,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 0 8%;
-  background-color: #FEFBE9;
-  /* color: #472E01; */
+  background-color: #DCDCDC;
   max-width: 1250px;
   margin: 0 auto;
 }

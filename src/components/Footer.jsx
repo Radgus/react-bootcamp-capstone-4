@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Section = styled.section`
   margin-top: 2rem;
-  background-color: lightgray;
+  background-color: deepskyblue;
   height: 4rem;
   display: flex;
   justify-content: center;
