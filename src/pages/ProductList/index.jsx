@@ -67,6 +67,20 @@ const ProductList = () => {
 
   useEffect(() => {
     console.log('activeFilters: ', activeFilters);
+    const categoryNames = [];
+    activeFilters.forEach(element => {
+      categoryNames.push(element.data.name.toLowerCase());
+    });
+
+    if (categoryNames.length > 0) {
+      console.log('categoryNames: ', categoryNames);
+      // eslint-disable-next-line max-len
+      const newListProducts = products.filter( item => categoryNames.includes(item.data.category.slug));
+      console.log('newListProducts: ', newListProducts);
+      setProducts(newListProducts);
+    } else {
+      setProducts([...productList['results']]);
+    }
   }, [activeFilters]);
 
   const handleSidebar = () => setIsMenuCollapse(!isMenuCollapse);
