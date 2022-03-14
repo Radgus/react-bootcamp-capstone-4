@@ -5,6 +5,8 @@ import categoryIcon from '../../resources/images/category-icon2.png';
 import activeIcon from '../../resources/images/active-icon.png';
 import listIcon from '../../resources/images/list-icon.png';
 import CategoryList from '../../utils/CategoryList';
+import productList from '../../utils/products';
+import ProductSection from '../../components/ProductSection';
 
 
 const Container = styled.div`
@@ -56,9 +58,11 @@ const ProductList = () => {
   const [isMenuCollapse,setIsMenuCollapse] = useState(false);
   const [activeFilters, setActiveFilters] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     setCategoryList([...CategoryList['results']]);
+    setProducts([...productList['results']]);
   }, []);
 
   useEffect(() => {
@@ -143,7 +147,7 @@ const ProductList = () => {
       </div>
 
       <div className="container__content">
-        <h1>This is the Product List Page</h1>
+        <ProductSection productsList={products} />
       </div>
 
     </Container>

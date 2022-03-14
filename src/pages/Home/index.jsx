@@ -5,7 +5,7 @@ import { useFeaturedBanners } from '../../utils/hooks/useFeaturedBanners';
 import SliderSection from './components/SliderSection';
 import productsCategories from '../../utils/productsCategory';
 import CategorySection from './components/CategorySection';
-import ProductSection from './components/ProductSection';
+import ProductSection from '../../components/ProductSection';
 import productList from '../../utils/products';
 import { Main } from '../../components/Mix';
 
