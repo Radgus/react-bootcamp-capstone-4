@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Divider } from '../../components/Mix';
+import { Divider, DividerSpace } from '../../components/Mix';
 import categoryIcon from '../../resources/images/category-icon2.png';
 import activeIcon from '../../resources/images/active-icon.png';
 import listIcon from '../../resources/images/list-icon.png';
 import CategoryList from '../../utils/CategoryList';
 import productList from '../../utils/products';
 import ProductSection from '../../components/ProductSection';
+import Colors from '../../utils/colors';
+import Spiner from './components/Loader';
 
 
 const Container = styled.div`
@@ -53,30 +55,60 @@ const Sidebar = styled.section`
   }
 `;
 
+const Pagination = styled.section`
+  nav {
+    margin: 3rem 0 2rem 0;
+    display: flex;
+    justify-content: right;
+  }
+  a {
+    min-width: 2rem;
+    border: 0.2rem solid ${Colors['BG-C']};
+    cursor: pointer;
+    font-size: 1.8rem;
+    padding: 0.5rem 1.5rem;
+    text-decoration: none;
+    color: black;
+    border-radius: 0.5rem;
+    &:hover {
+      background-color: brown;
+      color: white;
+    }
+  }
+`;
+
+const NoProducts = styled.div`
+  height: 8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 
 const ProductList = () => {
   const [isMenuCollapse,setIsMenuCollapse] = useState(false);
   const [activeFilters, setActiveFilters] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setCategoryList([...CategoryList['results']]);
     setProducts([...productList['results']]);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
   }, []);
 
   useEffect(() => {
-    console.log('activeFilters: ', activeFilters);
     const categoryNames = [];
     activeFilters.forEach(element => {
       categoryNames.push(element.data.name.toLowerCase());
     });
 
     if (categoryNames.length > 0) {
-      console.log('categoryNames: ', categoryNames);
       // eslint-disable-next-line max-len
-      const newListProducts = products.filter( item => categoryNames.includes(item.data.category.slug));
-      console.log('newListProducts: ', newListProducts);
+      const newListProducts = productList['results'].filter( item => categoryNames.includes(item.data.category.slug));
       setProducts(newListProducts);
     } else {
       setProducts([...productList['results']]);
@@ -94,7 +126,6 @@ const ProductList = () => {
       const newActiveFilters = activeFilters.filter(item => item.id !== id);
       setActiveFilters(newActiveFilters);
     }
-
   }
   
   return (
@@ -161,7 +192,37 @@ const ProductList = () => {
       </div>
 
       <div className="container__content">
-        <ProductSection productsList={products} />
+        
+        {
+          isLoading
+          ? <Spiner/>
+          : <>
+              {activeFilters.length === 0 
+              ? <h1>All products</h1>
+              : <h1>Filters activated</h1>
+              }
+
+              {
+                products.length === 0
+                ? <NoProducts> <h3>There are no products</h3> </NoProducts> 
+                : <ProductSection productsList={products} />
+              }
+            
+              <DividerSpace/>
+
+              <Pagination>
+                <nav>
+                  <a href="/productList" className="pagination__number">1</a>
+                  <a href="/productList" className="pagination__number">2</a>
+                  <a href="/productList" className="pagination__number">3</a>
+                  <a href="/productList" className="pagination__number">Next</a>
+                </nav>
+              </Pagination>
+          </>
+        }
+        
+       
+
       </div>
 
     </Container>
