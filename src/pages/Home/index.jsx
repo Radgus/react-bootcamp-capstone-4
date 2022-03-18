@@ -1,11 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFeaturedBanners } from '../../utils/hooks/useFeaturedBanners';
 import SliderSection from './components/SliderSection';
 import productsCategories from '../../utils/productsCategory';
 import CategorySection from './components/CategorySection';
-import ProductSection from './components/ProductSection';
+import ProductSection from '../../components/ProductSection';
 import productList from '../../utils/products';
+import { Main } from '../../components/Mix';
 
 const SectionTitle = styled.div`
   margin-top: 3rem;
@@ -30,7 +32,7 @@ const Home = () => {
   const productsList = productList.results
 
   return (
-    <main>
+    <Main>
       <SliderSection 
         handleSlider={handleSlider} 
         featuredBanners={featuredBanners}
@@ -48,7 +50,14 @@ const Home = () => {
 
       <ProductSection productsList={productsList}/> 
 
-    </main>
+      <SectionTitle>
+        <h1>Products</h1>
+        <Link to="/productList">
+          <button type='button'>View all products</button>
+        </Link>
+      </SectionTitle>
+
+    </Main>
   )
 }
 

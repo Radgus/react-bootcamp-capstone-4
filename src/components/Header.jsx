@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import shoppingCarIcon from '../resources/images/shopping-icon-2.png';
 import logo from '../resources/images/logo-9.PNG';
 import searchIcon from '../resources/images/search-icon-5.png';
 
 const Section = styled.section`
-  margin: 3rem 0;
-  padding: 1rem 0;
+  margin-bottom: 2rem;
+  padding: 2rem 8% 0 8%;
+  background-color: white;
   header {
     display: flex;
     flex-wrap: wrap;
@@ -90,7 +92,9 @@ const Header = () => {
       <header>
 
         <div className="header__section left logo">
-          <Logo src={logo} alt="logoCommerce" />
+          <Link to="/">
+            <Logo src={logo} alt="logoCommerce" />
+          </Link>
         </div>
 
         <div className="header__section search">
