@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Divider, DividerSpace } from '../../components/Mix';
@@ -14,6 +15,7 @@ import Spiner from './components/Loader';
 const Container = styled.div`
   display: flex;
   margin-right: 8%;
+  flex: 1 0 auto;
   .container__sidebar {
     width: ${(props) => props.collapsed ? '4.25rem' : '36%'};
     background-color: white;
@@ -46,6 +48,9 @@ const Sidebar = styled.section`
   }
   .check {
     height: 3rem;
+  }
+  .pointer {
+    cursor: pointer;
   }
   .sidebar__bullet {
     width: 0.6rem;
@@ -135,8 +140,8 @@ const ProductList = () => {
         <Sidebar>
 
           <div className="sidebar__section" onClick={handleSidebar}>
-            <div className="sidebar__icon">
-              <img src={categoryIcon} alt="filter Icon"/>
+            <div className="sidebar__icon pointer">
+              <img src={categoryIcon} alt="Category Icon"/>
             </div>
             <p>Categories</p>
           </div>
@@ -212,10 +217,10 @@ const ProductList = () => {
 
               <Pagination>
                 <nav>
-                  <a href="/productList" className="pagination__number">1</a>
-                  <a href="/productList" className="pagination__number">2</a>
-                  <a href="/productList" className="pagination__number">3</a>
-                  <a href="/productList" className="pagination__number">Next</a>
+                  <a href="#" className="pagination__number">1</a>
+                  <a href="#" className="pagination__number">2</a>
+                  <a href="#" className="pagination__number">3</a>
+                  <a href="#" className="pagination__number">Next</a>
                 </nav>
               </Pagination>
           </>
