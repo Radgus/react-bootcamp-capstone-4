@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFeaturedBanners } from '../../utils/hooks/useFeaturedBanners';
+import { useFeaturedCategories } from '../../utils/hooks/useFeaturedCategories';
 import SliderSection from './components/SliderSection';
-import productsCategories from '../../utils/productsCategory';
 import CategorySection from './components/CategorySection';
 import ProductSection from '../../components/ProductSection';
 import productList from '../../utils/products';
@@ -15,6 +15,8 @@ const SectionTitle = styled.div`
 
 const Home = () => {
   const featuredBanners = useFeaturedBanners().data?.results;
+  const featuredCategories = useFeaturedCategories().data?.results;
+
   const handleSlider = (moveDirection) => {
     const contentSlider = document.getElementById('contentSlider');
     const childLength = contentSlider.firstChild.clientWidth;
@@ -26,8 +28,6 @@ const Home = () => {
       contentSlider.scrollLeft += childLength;
     }
   }
-
-  const categoryList = productsCategories.results;
 
   const productsList = productList.results
 
@@ -42,7 +42,7 @@ const Home = () => {
         <h1>Categories</h1>
       </SectionTitle>
 
-      <CategorySection categoryList={categoryList}/>
+      <CategorySection categoryList={featuredCategories}/>
       
       <SectionTitle>
         <h1>Products</h1>

@@ -44,7 +44,7 @@ const Category = styled.div`
 
 const CategorySection = ({ categoryList }) => (
   <Categories>
-    {categoryList.map((item) => 
+    {categoryList?.map((item) => 
       <Category key={item.id}>
         <div className="imageBox">
           <img src={item.data.main_image.url} alt={item.data.main_image.alt} />

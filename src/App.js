@@ -10,6 +10,7 @@ const App = () => (
     <Layout>
         <Routes>
           <Route exac path='/' element={<Home/>} />
+          <Route exac path='/home' element={<Home/>} />
           <Route exac path='/productList' element={<ProductList/>} />
         </Routes>
     </Layout>
