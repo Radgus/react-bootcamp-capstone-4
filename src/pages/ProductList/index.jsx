@@ -1,13 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
+// import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Divider, DividerSpace } from '../../components/Mix';
 import categoryIcon from '../../resources/images/category-icon2.png';
 import activeIcon from '../../resources/images/active-icon.png';
 import listIcon from '../../resources/images/list-icon.png';
-import CategoryList from '../../utils/CategoryList';
+// import CategoryList from '../../utils/CategoryList';
 import productList from '../../utils/products';
 import ProductSection from '../../components/ProductSection';
+import { useFeaturedCategories } from '../../utils/hooks/useFeaturedCategories';
 import Colors from '../../utils/colors';
 import Spiner from './components/Loader';
 
@@ -93,16 +95,24 @@ const NoProducts = styled.div`
 const ProductList = () => {
   const [isMenuCollapse,setIsMenuCollapse] = useState(false);
   const [activeFilters, setActiveFilters] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([...productList['results']]);
   const [isLoading, setIsLoading] = useState(true);
+  const categoryList = useFeaturedCategories().data.results;
 
   useEffect(() => {
-    setCategoryList([...CategoryList['results']]);
-    setProducts([...productList['results']]);
+    const search  = window.location.search;
+    const params = new URLSearchParams(search);
+    const category = params.get('category');
+    console.log('category: ', category);
+    if (categoryList !== null && categoryList !== undefined && categoryList.length > 0 ) {
+      console.log('categoryList: ', categoryList);
+    }
+  }, [categoryList]);
+
+  useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 500);
   }, []);
 
   useEffect(() => {
@@ -121,7 +131,7 @@ const ProductList = () => {
   }, [activeFilters]);
 
   const handleSidebar = () => setIsMenuCollapse(!isMenuCollapse);
-  
+
   const handlerCheckbox = (e,id) => {
     const isActive = e.target.checked;
     if (isActive) {
@@ -154,7 +164,7 @@ const ProductList = () => {
             <p>List</p>
           </div>
           { 
-            categoryList.map((category) => {
+            categoryList?.map((category) => {
               const id = category.id;
               return (
                 <div key={id} className="sidebar__section">

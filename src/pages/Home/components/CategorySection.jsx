@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
 
 const Categories = styled.div`
   display: flex;
@@ -13,7 +15,6 @@ const Category = styled.div`
   height: auto;
   margin: 0.7rem 0;
   .imageBox {
-    width: 100%;
     height: 10rem;
     display: flex;
     justify-content: center;
@@ -24,6 +25,7 @@ const Category = styled.div`
     height: 100%;
     object-fit: cover;
     border-radius: 0.5rem;
+    cursor: pointer;
   }
   .title {
     text-align: center;
@@ -44,16 +46,24 @@ const Category = styled.div`
 
 const CategorySection = ({ categoryList }) => (
   <Categories>
-    {categoryList?.map((item) => 
-      <Category key={item.id}>
-        <div className="imageBox">
-          <img src={item.data.main_image.url} alt={item.data.main_image.alt} />
-        </div>
+    {categoryList?.map((item) => {
+      return (
+        <Category key={item.id}>
+        <Link 
+          to={{
+            pathname: "/productList",
+            search: `?category=${item.id}`,
+          }}>
+          <div className="imageBox">
+            <img src={item.data.main_image.url} alt={item.data.main_image.alt} />
+          </div>
+        </Link>
         <div className="title">
           <p>{item.data.name}</p>
         </div>
       </Category>
-    )}
+      ) 
+    })}
   </Categories>
 );
 
