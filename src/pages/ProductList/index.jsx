@@ -152,6 +152,10 @@ const ProductList = () => {
       setActiveFilters(newActiveFilters);
     }
   }
+
+  const handleAddCart = (id) => {
+    console.log('Add to cart the item with id: ', id);
+  }
   
   return (
     <Container collapsed={isMenuCollapse}>
@@ -230,7 +234,7 @@ const ProductList = () => {
               {
                 products.length === 0
                 ? <NoProducts> <h3>There are no products</h3> </NoProducts> 
-                : <ProductSection productsList={products} />
+                : <ProductSection productsList={products} handleAddCart={handleAddCart}/>
               }
             
               <DividerSpace/>
