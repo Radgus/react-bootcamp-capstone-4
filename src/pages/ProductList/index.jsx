@@ -6,10 +6,9 @@ import { Divider, DividerSpace } from '../../components/Mix';
 import categoryIcon from '../../resources/images/category-icon2.png';
 import activeIcon from '../../resources/images/active-icon.png';
 import listIcon from '../../resources/images/list-icon.png';
-// import CategoryList from '../../utils/CategoryList';
-import productList from '../../utils/products';
 import ProductSection from '../../components/ProductSection';
 import { useFeaturedCategories } from '../../utils/hooks/useFeaturedCategories';
+import { useFeaturedProducts } from '../../utils/hooks/useFeaturedProducts';
 import Colors from '../../utils/colors';
 import Spiner from './components/Loader';
 
@@ -95,15 +94,24 @@ const NoProducts = styled.div`
 const ProductList = () => {
   const [isMenuCollapse,setIsMenuCollapse] = useState(false);
   const [activeFilters, setActiveFilters] = useState([]);
-  const [products, setProducts] = useState([...productList['results']]);
+  const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const categoryList = useFeaturedCategories().data.results;
+  const fetchProducts = useFeaturedProducts().data.results;
+  
+
+  useEffect(() => {
+    if (fetchProducts !== null && fetchProducts !== undefined && fetchProducts.length > 0) {
+      setProducts(fetchProducts);
+    }
+  }, [fetchProducts]);
 
   useEffect(() => {
     const search  = window.location.search;
     const params = new URLSearchParams(search);
     const category = params.get('category');
-    if (categoryList !== null && categoryList !== undefined && categoryList.length > 0 ) {
+    if (category !== null && categoryList !== null && 
+        categoryList !== undefined && categoryList.length > 0 ) {
       const filterSelected = categoryList.filter(item => item.id === category);
       setActiveFilters(activeFilters => activeFilters.concat(filterSelected));
       const filter = document.getElementById(filterSelected[0]['id']);
@@ -125,12 +133,12 @@ const ProductList = () => {
 
     if (categoryNames.length > 0) {
       // eslint-disable-next-line max-len
-      const newListProducts = productList['results'].filter( item => categoryNames.includes(item.data.category.slug));
+      const newListProducts = fetchProducts?.filter( item => categoryNames.includes(item.data.category.slug));
       setProducts(newListProducts);
     } else {
-      setProducts([...productList['results']]);
+      setProducts(fetchProducts);
     }
-  }, [activeFilters]);
+  }, [activeFilters,fetchProducts]);
 
   const handleSidebar = () => setIsMenuCollapse(!isMenuCollapse);
 

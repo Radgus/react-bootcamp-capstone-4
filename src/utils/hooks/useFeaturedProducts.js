@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { API_BASE_URL } from '../constants';
 import { useLatestAPI } from './useLatestAPI';
 
-export function useFeaturedCategories() {
+export function useFeaturedProducts() {
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
-  const [featuredCategories, setFeaturedCategories] = useState(() => ({
+  const [featuredProducts, setFeaturedProducts] = useState(() => ({
     data: {},
     isLoading: true,
   }));
@@ -16,32 +16,33 @@ export function useFeaturedCategories() {
 
     const controller = new AbortController();
 
-    async function getFeaturedCategories() {
+    async function getFeaturedProducts() {
       try {
-        setFeaturedCategories({ data: {}, isLoading: true });
+        setFeaturedProducts({ data: {}, isLoading: true });
 
         const response = await fetch(
-          `${API_BASE_URL}/documents/search?ref=${apiRef}&q=%5B%5Bat
-          (document.type%2C%20%22category%22)%5D%5D&lang=en-us&pageSize=30`,
+          `${API_BASE_URL}/documents/search?ref=${apiRef}&q=
+          %5B%5Bat(document.type%2C%20"product")%5D%5D&q=%5B%5Bat
+          (document.tags%2C%20%5B"Featured"%5D)%5D%5D&lang=en-us&pageSize=16`,
           {
             signal: controller.signal,
           }
         );
         const data = await response.json();
 
-        setFeaturedCategories({ data, isLoading: false });
+        setFeaturedProducts({ data, isLoading: false });
       } catch (err) {
-        setFeaturedCategories({ data: {}, isLoading: false });
+        setFeaturedProducts({ data: {}, isLoading: false });
         console.error(err);
       }
     }
 
-    getFeaturedCategories();
+    getFeaturedProducts();
 
     return () => {
       controller.abort();
     };
   }, [apiRef, isApiMetadataLoading]);
 
-  return featuredCategories;
+  return featuredProducts;
 }
