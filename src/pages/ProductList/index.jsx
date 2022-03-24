@@ -103,9 +103,11 @@ const ProductList = () => {
     const search  = window.location.search;
     const params = new URLSearchParams(search);
     const category = params.get('category');
-    console.log('category: ', category);
     if (categoryList !== null && categoryList !== undefined && categoryList.length > 0 ) {
-      console.log('categoryList: ', categoryList);
+      const filterSelected = categoryList.filter(item => item.id === category);
+      setActiveFilters(activeFilters => activeFilters.concat(filterSelected));
+      const filter = document.getElementById(filterSelected[0]['id']);
+      filter.checked = true;
     }
   }, [categoryList]);
 
