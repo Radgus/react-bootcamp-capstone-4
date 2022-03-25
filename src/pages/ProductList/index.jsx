@@ -8,7 +8,7 @@ import activeIcon from '../../resources/images/active-icon.png';
 import listIcon from '../../resources/images/list-icon.png';
 import ProductSection from '../../components/ProductSection';
 import { useFeaturedCategories } from '../../utils/hooks/useFeaturedCategories';
-import { useFeaturedProducts } from '../../utils/hooks/useFeaturedProducts';
+import { useProducts } from '../../utils/hooks/useProducts';
 import Colors from '../../utils/colors';
 import Spiner from './components/Loader';
 
@@ -90,6 +90,16 @@ const NoProducts = styled.div`
   align-items: center;
 `;
 
+const ClearButton = styled.button`
+  margin: 0.5rem auto;
+  cursor: pointer;
+  background-color: sandybrown;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  border: 0;
+  padding: 0.8rem;
+`;
+
 
 const ProductList = () => {
   const [isMenuCollapse,setIsMenuCollapse] = useState(false);
@@ -97,8 +107,7 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const categoryList = useFeaturedCategories().data.results;
-  const fetchProducts = useFeaturedProducts().data.results;
-  
+  const fetchProducts = useProducts().data.results;
 
   useEffect(() => {
     if (fetchProducts !== null && fetchProducts !== undefined && fetchProducts.length > 0) {
@@ -111,8 +120,12 @@ const ProductList = () => {
     const params = new URLSearchParams(search);
     const category = params.get('category');
     if (category !== null && categoryList !== null && 
-        categoryList !== undefined && categoryList.length > 0 ) {
-      const filterSelected = categoryList.filter(item => item.id === category);
+      categoryList !== undefined && categoryList.length > 0 ) {
+        const categoryParams = category.split(',');
+        const filterSelected = categoryList.filter(item => 
+        item.slugs.length === categoryParams.length && 
+        item.slugs.every(element=> categoryParams.includes(element))
+      );
       setActiveFilters(activeFilters => activeFilters.concat(filterSelected));
       const filter = document.getElementById(filterSelected[0]['id']);
       filter.checked = true;
@@ -128,9 +141,10 @@ const ProductList = () => {
   useEffect(() => {
     const categoryNames = [];
     activeFilters.forEach(element => {
-      categoryNames.push(element.data.name.toLowerCase());
+      element.slugs.forEach((slug)=>{
+        categoryNames.push(slug);
+      })
     });
-
     if (categoryNames.length > 0) {
       // eslint-disable-next-line max-len
       const newListProducts = fetchProducts?.filter( item => categoryNames.includes(item.data.category.slug));
@@ -155,6 +169,14 @@ const ProductList = () => {
 
   const handleAddCart = (id) => {
     console.log('Add to cart the item with id: ', id);
+  }
+
+  const handleClearFilters = () => {
+    activeFilters.forEach((filter) =>{
+      const checkInput = document.getElementById(filter['id']);
+      checkInput.checked = false;
+    });
+    setActiveFilters([]);
   }
   
   return (
@@ -194,6 +216,9 @@ const ProductList = () => {
               );
             })
           }
+          <div className="sidebar__section">
+            <ClearButton type='button' onClick={handleClearFilters}>Clear filters</ClearButton>
+          </div>
           <Divider />
           
           <div className="sidebar__section">
@@ -221,7 +246,6 @@ const ProductList = () => {
       </div>
 
       <div className="container__content">
-        
         {
           isLoading
           ? <Spiner/>
@@ -249,9 +273,6 @@ const ProductList = () => {
               </Pagination>
           </>
         }
-        
-       
-
       </div>
 
     </Container>

@@ -47,12 +47,13 @@ const Category = styled.div`
 const CategorySection = ({ categoryList }) => (
   <Categories>
     {categoryList?.map((item) => {
+
       return (
         <Category key={item.id}>
         <Link 
           to={{
-            pathname: "/productList",
-            search: `?category=${item.id}`,
+            pathname: "/products",
+            search: `?category=${item.slugs}`,
           }}>
           <div className="imageBox">
             <img src={item.data.main_image.url} alt={item.data.main_image.alt} />

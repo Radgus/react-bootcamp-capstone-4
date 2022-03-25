@@ -41,8 +41,6 @@ const Home = () => {
     }
   }
 
-  const productsList = productList.results
-
   return (
     <Main>
       <SliderSection 
@@ -64,7 +62,7 @@ const Home = () => {
 
       <SectionTitle>
         <h1>Products</h1>
-        <Link to="/productList">
+        <Link to="/products">
           <button type='button'>View all products</button>
         </Link>
       </SectionTitle>
