@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFeaturedBanners } from '../../utils/hooks/useFeaturedBanners';
@@ -8,14 +8,26 @@ import CategorySection from './components/CategorySection';
 import ProductSection from '../../components/ProductSection';
 import productList from '../../utils/products';
 import { Main } from '../../components/Mix';
+import { useFeaturedProducts } from '../../utils/hooks/useFeaturedProducts';
+
 
 const SectionTitle = styled.div`
   margin-top: 3rem;
 `;
 
 const Home = () => {
+  const [products, setProducts] = useState([]);
+
   const featuredBanners = useFeaturedBanners().data?.results;
   const featuredCategories = useFeaturedCategories().data?.results;
+  const fetchProducts = useFeaturedProducts().data.results;
+
+  useEffect(() => {
+    if (fetchProducts !== null && fetchProducts !== undefined && fetchProducts.length > 0) {
+      setProducts(fetchProducts);
+    }
+  }, [fetchProducts]);
+
 
   const handleSlider = (moveDirection) => {
     const contentSlider = document.getElementById('contentSlider');
@@ -48,7 +60,7 @@ const Home = () => {
         <h1>Products</h1>
       </SectionTitle>
 
-      <ProductSection productsList={productsList}/> 
+      <ProductSection productsList={products}/> 
 
       <SectionTitle>
         <h1>Products</h1>

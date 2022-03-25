@@ -10,13 +10,19 @@ const Container = styled.div`
 `;
 
 const ImgSection = styled.div`
+  width: 15.5rem;
   height: 20rem;
-  padding: 0 8%;
+  border-radius: 1rem;
+  margin: 0 auto;
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 1rem;
+  }
+  @media (min-width: 700px) {
+    width: 23.2rem;
+    height: 30rem;
   }
 `;
 
@@ -31,10 +37,9 @@ const Card = styled.div`
 `;
 
 const Wrapper = styled.div`
-  padding: 1rem 1rem 0 1rem;
+  padding: 5% 5% 0;
   display: flex;
   flex-direction: column;
-  /* flex: 1 0 auto; */
 `;
 
 const Title = styled.div`
@@ -42,68 +47,104 @@ const Title = styled.div`
 `;
 
 const Description = styled.div`
-  margin: 1rem 0;
+  p {
+    font-size: 1.2rem;
+  }
 `;
 
 const Shopping = styled.div`
-  /* border-radius: 2.5rem 2.5rem 0 0; */
-  /* border-radius: 2.5rem; */
-  /* background-color: black; */
-  padding: 1.5rem 8%;
+  padding: 0.5rem 10%;
   display: flex;
   align-items: center;
   .shopping__price {
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 40%;
-    /* color: white; */
   }
   .shopping__addtocard {
     display: flex;
     align-items: center;
+    justify-content: right;
     width: 60%;
+    height: 100%;
+  }
+`;
+
+const Price = styled.p`
+  font-size: 1.8rem;
+  margin: 0.5rem 0;
+  font-weight: 600;
+`;
+
+const Span = styled.span`
+  font-size: 1.5rem;
+  font-weight: 600;
+`;
+
+const Money = styled.p`
+  font-size: 2.2rem;
+  font-family: 'Times New Roman', Times, serif;
+`;
+
+const Buttom = styled.button`
+  width: 80%;
+  height: 80%;
+  border-radius: 2rem;
+  cursor: pointer;
+  color: deeppink;
+  border: 0.1rem solid black;
+  background-color: white;
+  font-weight: 600;
+  font-size: 1.4rem;
+  :hover {
+    background-color: black;
   }
 `;
 
 
 const ProductDetail = () => {
+  const [product, setProduct] = useState({});
+  const fetchProducts = useFeaturedProducts().data.results;
 
-  const [product, setProduct] = useState({})
+  useEffect(() => {
+    const search  = window.location.search;
+    const params = new URLSearchParams(search);
+    const productId = params.get('product');
+    console.log('productId: ', productId);
+    if (productId !== null && fetchProducts !== null && 
+        fetchProducts !== undefined && fetchProducts.length > 0 ) {
+      const productSelected = fetchProducts.filter(item => item.id === productId);
+      setProduct({...productSelected[0]});
+      console.log('{...productSelected[0]}: ', {...productSelected[0]});
+    }
+    // console.log('product: ', product);
+  }, [fetchProducts]);
+
+  const handleAddToCard = (e, item) => {
+    console.log('enviar al carrito: ', item);
+  }
 
   return (
     <Container>
       <ImgSection>
-        <img src="http://placeimg.com/640/480/people" alt="" />
+        <img src={product?.data?.mainimage?.url} alt="" />
       </ImgSection>
       <Card>
         <Wrapper>
           <Title>
-            <h2>Product Detail Page</h2>
+            <h2>{product?.data?.name}</h2>
           </Title>
           <Description>
-            <p>
-              Keeping a distinctive complex pattern without being 
-              complicated involves choosing a simple palette. 
-              The poinsettia red and ivory white in this cushion 
-              cover are two lovely colors that we enjoy all season 
-              long. The sweater-like snowflake design celebrates 
-              more than one type of holiday (reverse is sherpa-like 
-              sheepskin). Make it a snow day. The front is made of 
-              100% yarn-dyed acrylic; It is reversed to 100% recycled 
-              polyester sherpa in white. Yarn dyed fabric has amazing 
-              vivid colors that keep their radiance over time. Holds 
-              16 \"x 26\" fill (sold separately).
-            </p>
+            <p>{product?.data?.short_description}</p>
           </Description>
         </Wrapper>
         <Shopping>
           <div className="shopping__price">
-            <p>price</p>
-            <p>$138.50</p>
+            <Price>Price</Price>
+            <Money><Span>$</Span>{product?.data?.price}</Money>
           </div>
           <div className="shopping__addtocard">
-            <button>Add to Cart</button>
+            <Buttom type="button" onClick={(e)=>handleAddToCard(e, product)}>Add to Cart</Buttom>
           </div>
         </Shopping>
       </Card>
