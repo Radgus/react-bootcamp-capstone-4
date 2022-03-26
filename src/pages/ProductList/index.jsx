@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
-// import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Divider, DividerSpace } from '../../components/Mix';
 import categoryIcon from '../../resources/images/category-icon2.png';
@@ -9,96 +8,8 @@ import listIcon from '../../resources/images/list-icon.png';
 import ProductSection from '../../components/ProductSection';
 import { useFeaturedCategories } from '../../utils/hooks/useFeaturedCategories';
 import { useProducts } from '../../utils/hooks/useProducts';
-import Colors from '../../utils/colors';
 import Spiner from './components/Loader';
-
-
-const Container = styled.div`
-  display: flex;
-  margin-right: 8%;
-  flex: 1 0 auto;
-  .container__sidebar {
-    width: ${(props) => props.collapsed ? '4.25rem' : '36%'};
-    background-color: white;
-    overflow-y: hidden;
-  }
-  .container__content {
-    background-color: white;
-    padding: 1rem;
-    margin-left: 1rem;
-    width: -webkit-fill-available;
-  }
-`;
-
-const Sidebar = styled.section`
-  .sidebar__section {
-    display: flex;
-    align-items: center;
-  }
-  .sidebar__icon {
-    min-width: 4rem;
-    width: 4rem;
-    height: 5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    img {
-      width: 2.5rem;
-      height: 2.5rem;
-    }
-  }
-  .check {
-    height: 3rem;
-  }
-  .pointer {
-    cursor: pointer;
-  }
-  .sidebar__bullet {
-    width: 0.6rem;
-    height: 0.6rem;
-    background-color: black;
-    border-radius: 50%;
-  }
-`;
-
-const Pagination = styled.section`
-  nav {
-    margin: 3rem 0 2rem 0;
-    display: flex;
-    justify-content: right;
-  }
-  a {
-    min-width: 2rem;
-    border: 0.2rem solid ${Colors['BG-C']};
-    cursor: pointer;
-    font-size: 1.8rem;
-    padding: 0.5rem 1.5rem;
-    text-decoration: none;
-    color: black;
-    border-radius: 0.5rem;
-    &:hover {
-      background-color: brown;
-      color: white;
-    }
-  }
-`;
-
-const NoProducts = styled.div`
-  height: 8rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ClearButton = styled.button`
-  margin: 0.5rem auto;
-  cursor: pointer;
-  background-color: sandybrown;
-  border-radius: 0.5rem;
-  font-size: 1.2rem;
-  border: 0;
-  padding: 0.8rem;
-`;
+import { Container, Sidebar, Pagination, NoProducts, ClearButton } from './styles';
 
 
 const ProductList = () => {
@@ -106,14 +17,28 @@ const ProductList = () => {
   const [activeFilters, setActiveFilters] = useState([]);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [pages, setPages] = useState([]);
   const categoryList = useFeaturedCategories().data.results;
   const fetchProducts = useProducts().data.results;
+  const infoProducts = useProducts().data;
 
   useEffect(() => {
     if (fetchProducts !== null && fetchProducts !== undefined && fetchProducts.length > 0) {
       setProducts(fetchProducts);
     }
   }, [fetchProducts]);
+
+  useEffect(() => {
+    console.log('infoProducts1: ', infoProducts);
+    if (Object.keys(infoProducts).length > 0) {
+      console.log('infoProducts2: ', infoProducts);
+      const numberOfPages = infoProducts['total_pages'];
+      console.log('numberOfPages: ', numberOfPages);
+      for (let i = 0; i < numberOfPages; i++) {
+        setPages(pages=>pages.concat(<a href="#" className="pagination__number">{i+1}</a>));
+      }
+    }
+  }, [infoProducts]);
 
   useEffect(() => {
     const search  = window.location.search;
@@ -265,10 +190,9 @@ const ProductList = () => {
 
               <Pagination>
                 <nav>
-                  <a href="#" className="pagination__number">1</a>
-                  <a href="#" className="pagination__number">2</a>
-                  <a href="#" className="pagination__number">3</a>
-                  <a href="#" className="pagination__number">Next</a>
+                  {
+                    // pages.length > 0 && pages.map(page => page)
+                  }
                 </nav>
               </Pagination>
           </>
