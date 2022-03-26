@@ -13,7 +13,7 @@ const App = () => (
           <Route exac path='/' element={<Home/>} />
           <Route exac path='/home' element={<Home/>} />
           <Route exac path='/products' element={<ProductList/>} />
-          <Route exac path='/productDetail' element={<ProductDetail/>} />
+          <Route exac path='/product/:productId' element={<ProductDetail/>} />
         </Routes>
     </Layout>
   </BrowserRouter>

@@ -61,8 +61,7 @@ const ProductSection = ({ productsList, handleAddCart }) => (
     {productsList.map((item) => 
       <Product key={item.id}>
         <Link to={{
-          pathname: "/productDetail",
-          search: `?product=${item.id}`,
+          pathname: `/product/${item.id}`,
         }}>
           <div className="imageBox">
             <img src={item.data.mainimage.url} alt={item.data.mainimage.alt} />
