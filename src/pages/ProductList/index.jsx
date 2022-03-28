@@ -1,15 +1,16 @@
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { Divider, DividerSpace } from '../../components/Mix';
 import categoryIcon from '../../resources/images/category-icon2.png';
 import activeIcon from '../../resources/images/active-icon.png';
 import listIcon from '../../resources/images/list-icon.png';
 import ProductSection from '../../components/ProductSection';
 import { useFeaturedCategories } from '../../utils/hooks/useFeaturedCategories';
-import { useProducts } from '../../utils/hooks/useProducts';
 import Spiner from './components/Loader';
 import { Container, Sidebar, Pagination, NoProducts, ClearButton } from './styles';
+import { useFetching } from '../../utils/hooks/useFetch';
+const URL = 'https://wizeline-academy.cdn.prismic.io/api/v2/documents/search?ref=YZaBvBIAACgAvnOP&q=%5B%5Bat%28document.type%2C+%22product%22%29%5D%5D&pageSize=12&languageCode=en-us&page=';
 
 
 const ProductList = () => {
@@ -19,37 +20,41 @@ const ProductList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [pages, setPages] = useState([]);
   const categoryList = useFeaturedCategories().data.results;
-  const fetchProducts = useProducts().data.results;
-  const infoProducts = useProducts().data;
+  const [fetchProducts, setFetchProducts] = useState([]);
+  const [nextPage, setNextPage] = useState('');  
+  const [previousPage, setPreviousPage] = useState(''); 
+  // const [totalPages, setTotalPages] = useState(1);
+  let firstCall = useFetching(URL+1);  
 
   useEffect(() => {
-    if (fetchProducts !== null && fetchProducts !== undefined && fetchProducts.length > 0) {
-      setProducts(fetchProducts);
+    const data = firstCall?.data;
+    const results = firstCall?.data?.results;
+    // setTotalPages(data.total_pages);
+    setNextPage(data.next_page);
+    setPreviousPage(data.prev_page);
+    if (results !== null && 
+      results !== undefined && 
+      results?.length > 0) {
+      setProducts(results);
     }
-  }, [fetchProducts]);
-
-  useEffect(() => {
-    console.log('infoProducts1: ', infoProducts);
-    if (Object.keys(infoProducts).length > 0) {
-      console.log('infoProducts2: ', infoProducts);
-      const numberOfPages = infoProducts['total_pages'];
-      console.log('numberOfPages: ', numberOfPages);
+    if (Object.keys(data)?.length > 0) {
+      const numberOfPages = data['total_pages'];
       for (let i = 0; i < numberOfPages; i++) {
-        setPages(pages=>pages.concat(<a href="#" className="pagination__number">{i+1}</a>));
+        setPages(pages=>pages.concat(<p id={i+1} className="pagination__number" key={i+1} onClick={()=>handleCounter(i+1)}> {i+1} </p>));
       }
     }
-  }, [infoProducts]);
+  }, [firstCall]);
 
   useEffect(() => {
     const search  = window.location.search;
     const params = new URLSearchParams(search);
     const category = params.get('category');
-    if (category !== null && categoryList !== null && 
-      categoryList !== undefined && categoryList.length > 0 ) {
-        const categoryParams = category.split(',');
-        const filterSelected = categoryList.filter(item => 
-        item.slugs.length === categoryParams.length && 
-        item.slugs.every(element=> categoryParams.includes(element))
+    if (category !== null && categoryList !== null && categoryList !== undefined && categoryList.length > 0 ) {
+      const categoryParams = category.split(',');
+
+      const filterSelected = categoryList.filter(item => 
+      item.slugs.length === categoryParams.length && 
+      item.slugs.every(element=> categoryParams.includes(element))
       );
       setActiveFilters(activeFilters => activeFilters.concat(filterSelected));
       const filter = document.getElementById(filterSelected[0]['id']);
@@ -58,26 +63,63 @@ const ProductList = () => {
   }, [categoryList]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  }, []);
-
-  useEffect(() => {
     const categoryNames = [];
     activeFilters.forEach(element => {
       element.slugs.forEach((slug)=>{
         categoryNames.push(slug);
       })
     });
-    if (categoryNames.length > 0) {
+    if (categoryNames?.length > 0) {
       // eslint-disable-next-line max-len
-      const newListProducts = fetchProducts?.filter( item => categoryNames.includes(item.data.category.slug));
+      const newListProducts = fetchProducts?.data?.results?.filter( item => categoryNames.includes(item.data.category.slug));
       setProducts(newListProducts);
     } else {
-      setProducts(fetchProducts);
+      setProducts(fetchProducts?.data?.results);
     }
   }, [activeFilters,fetchProducts]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    const firstFetchProducts = async () => {
+      const response = await fetch(URL+1);
+      const data = await response.json();
+      setFetchProducts({ data, isLoading: false });
+    }
+    firstFetchProducts();
+  }, []);
+
+  const resetPageSelected = (id) => {
+    for (let i = 0; i < firstCall?.data?.total_pages; i++) {
+      const node = document.getElementById(i+1);
+      node.style.borderColor= '#DCDCDC';
+    }
+    const selected = document.getElementById(id);
+    selected.style.borderColor = 'red';
+  }
+
+  const  handleMovePage = async(move) => {
+    const urlFetch = move === 'next' ? nextPage : previousPage;
+    if (urlFetch !== null && urlFetch !== undefined && urlFetch !== '') {
+      const response = await fetch(urlFetch);
+      const data = await response.json();
+      setNextPage(data.next_page);
+      setPreviousPage(data.prev_page);
+      setFetchProducts({ data, isLoading: false });
+      const currentPage = data.page;
+      resetPageSelected(currentPage);
+    }
+  }
+
+  const  handleCounter = async (page) => {
+    const response = await fetch(URL+page);
+    const data = await response.json();
+    setNextPage(data.next_page);
+    setPreviousPage(data.prev_page);
+    setFetchProducts({ data, isLoading: false });
+    resetPageSelected(page);
+  }
 
   const handleSidebar = () => setIsMenuCollapse(!isMenuCollapse);
 
@@ -175,13 +217,13 @@ const ProductList = () => {
           isLoading
           ? <Spiner/>
           : <>
-              {activeFilters.length === 0 
+              {activeFilters?.length === 0 
               ? <h1>All products</h1>
               : <h1>Filters activated</h1>
               }
 
-              {
-                products.length === 0
+              { products !== undefined &&
+                products?.length === 0
                 ? <NoProducts> <h3>There are no products</h3> </NoProducts> 
                 : <ProductSection productsList={products} handleAddCart={handleAddCart}/>
               }
@@ -189,9 +231,13 @@ const ProductList = () => {
               <DividerSpace/>
 
               <Pagination>
+                <div className="alfaOmega">
+                  <h3 onClick={()=>handleMovePage('previous')}>Previous</h3>
+                  <h3 onClick={()=>handleMovePage('next')}>Next</h3>
+                </div>
                 <nav>
                   {
-                    // pages.length > 0 && pages.map(page => page)
+                    pages.length > 0 && pages.map(page => page)
                   }
                 </nav>
               </Pagination>

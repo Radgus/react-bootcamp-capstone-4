@@ -51,25 +51,50 @@ export const Sidebar = styled.section`
 `;
 
 export const Pagination = styled.section`
-nav {
-  margin: 3rem 0 2rem 0;
+/* display: flex; */
+/* justify-content: right; */
+/* align-items: center; */
+width: 40rem;
+.alfaOmega {
+  /* width: 5rem; */
+  text-align: center;
   display: flex;
-  justify-content: right;
-}
-a {
-  min-width: 2rem;
-  border: 0.2rem solid ${Colors['BG-C']};
-  cursor: pointer;
-  font-size: 1.8rem;
-  padding: 0.5rem 1.5rem;
-  text-decoration: none;
-  color: black;
-  border-radius: 0.5rem;
-  &:hover {
-    background-color: brown;
-    color: white;
+  justify-content: space-between;
+  padding: 0 1rem;
+  h3 {
+    width: 6rem;
+    height: 3rem;
+    border: 0.1rem solid gray;
+    border-radius: 0.5rem;
+    cursor: pointer;
   }
 }
+nav {
+  padding: 3rem 0 2rem 0;
+  display: flex;
+  width: 30rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  margin: 0 auto;
+  p {
+    min-width: 2rem;
+    border: 0.2rem solid ${Colors['BG-C']};
+    cursor: pointer;
+    font-size: 1.8rem;
+    padding: 0.5rem 1.5rem;
+    text-decoration: none;
+    color: black;
+    border-radius: 0.5rem;
+    &:hover {
+      background-color: brown;
+      color: white;
+    }
+  }
+  p:first-child{
+    border: 0.2rem solid red;
+  }
+}
+
 `;
 
 export const NoProducts = styled.div`
