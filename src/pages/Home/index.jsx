@@ -6,7 +6,6 @@ import { useFeaturedCategories } from '../../utils/hooks/useFeaturedCategories';
 import SliderSection from './components/SliderSection';
 import CategorySection from './components/CategorySection';
 import ProductSection from '../../components/ProductSection';
-import productList from '../../utils/products';
 import { Main } from '../../components/Mix';
 import { useFeaturedProducts } from '../../utils/hooks/useFeaturedProducts';
 

@@ -51,12 +51,8 @@ export const Sidebar = styled.section`
 `;
 
 export const Pagination = styled.section`
-/* display: flex; */
-/* justify-content: right; */
-/* align-items: center; */
 width: 40rem;
 .alfaOmega {
-  /* width: 5rem; */
   text-align: center;
   display: flex;
   justify-content: space-between;

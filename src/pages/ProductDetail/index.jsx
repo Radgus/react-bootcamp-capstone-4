@@ -231,10 +231,7 @@ const ExpandCard = ({product}) => {
   );
 }
 
-
 // Expand FIN
-
-
 
 const ProductDetail = () => {
   const [product, setProduct] = useState({});
@@ -249,10 +246,6 @@ const ProductDetail = () => {
       setProduct({...productSelected[0]});
     }
   }, [fetchProducts, productId]);
-
-  useEffect(()=>{
-    console.log('product: ', product);
-  }, [product]);
 
   const handleAddToCard = (e, item) => {
     console.log('enviar al carrito: ', item);

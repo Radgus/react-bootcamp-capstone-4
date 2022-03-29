@@ -7,7 +7,7 @@ import activeIcon from '../../resources/images/active-icon.png';
 import listIcon from '../../resources/images/list-icon.png';
 import ProductSection from '../../components/ProductSection';
 import { useFeaturedCategories } from '../../utils/hooks/useFeaturedCategories';
-import Spiner from './components/Loader';
+import Loader from '../../components/Loader';
 import { Container, Sidebar, Pagination, NoProducts, ClearButton } from './styles';
 import { useFetching } from '../../utils/hooks/useFetch';
 const URL = 'https://wizeline-academy.cdn.prismic.io/api/v2/documents/search?ref=YZaBvBIAACgAvnOP&q=%5B%5Bat%28document.type%2C+%22product%22%29%5D%5D&pageSize=12&languageCode=en-us&page=';
@@ -81,7 +81,7 @@ const ProductList = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 500);
+    }, 1000);
     const firstFetchProducts = async () => {
       const response = await fetch(URL+1);
       const data = await response.json();
@@ -215,7 +215,7 @@ const ProductList = () => {
       <div className="container__content">
         {
           isLoading
-          ? <Spiner/>
+          ? <Loader/>
           : <>
               {activeFilters?.length === 0 
               ? <h1>All products</h1>

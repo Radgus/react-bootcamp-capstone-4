@@ -7,6 +7,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 1rem;
+  flex: 1 0 auto;
 `;
 
 const Product = styled.div`
