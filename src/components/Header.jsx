@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import shoppingCarIcon from '../resources/images/shopping-icon-2.png';
 import logo from '../resources/images/logo-9.PNG';
 import searchIcon from '../resources/images/search-icon-5.png';
+import ShoppingIcon from './ShoppingIcon';
 
 const Section = styled.section`
   margin-bottom: 2rem;
@@ -52,9 +52,6 @@ const Section = styled.section`
   }
 `;
 
-const Img = styled.img`
-  height: 3.5rem;
-`;
 
 const Logo = styled.img`
   height: 4rem;
@@ -121,7 +118,7 @@ const Header = () => {
         </div>
 
         <div className="header__section right shopping">
-          <Img src={shoppingCarIcon} alt="shoppingCarIcon" />
+          <ShoppingIcon/>
         </div>
 
       </header>

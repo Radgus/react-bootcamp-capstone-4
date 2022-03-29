@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
 import Search from './pages/Search';
+import ShoppingCart from './pages/Shopping';
 import './App.css';
 
 const App = () => (
@@ -16,6 +17,7 @@ const App = () => (
           <Route exac path='/products' element={<ProductList/>} />
           <Route exac path='/product/:productId' element={<ProductDetail/>} />
           <Route exac path='/search' element={<Search/>} />
+          <Route exac path='/cart' element={<ShoppingCart/>} />
         </Routes>
     </Layout>
   </BrowserRouter>
