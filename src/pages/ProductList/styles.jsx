@@ -15,7 +15,10 @@ export const Container = styled.div`
   background-color: white;
   padding: 1rem;
   margin-left: 1rem;
-  width: -webkit-fill-available;
+  width: 64%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
 }
 `;
 
@@ -51,7 +54,6 @@ export const Sidebar = styled.section`
 `;
 
 export const Pagination = styled.section`
-width: 40rem;
 .alfaOmega {
   text-align: center;
   display: flex;
@@ -68,7 +70,6 @@ width: 40rem;
 nav {
   padding: 3rem 0 2rem 0;
   display: flex;
-  width: 30rem;
   overflow-x: auto;
   scroll-behavior: smooth;
   margin: 0 auto;
@@ -98,6 +99,7 @@ export const NoProducts = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 1 0 auto;
 `;
 
 export const ClearButton = styled.button`

@@ -97,6 +97,7 @@ const ProductList = () => {
     }
     const selected = document.getElementById(id);
     selected.style.borderColor = 'red';
+    selected.scrollIntoView({block: "center", inline: "center", behavior: "smooth"});
   }
 
   const  handleMovePage = async(move) => {

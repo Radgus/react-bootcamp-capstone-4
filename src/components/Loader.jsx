@@ -14,6 +14,8 @@ const Loader = styled.div`
   animation-name: ${spinerAnimation};
   animation-duration: 1s;
   animation-iteration-count: infinite;
+  display: flex;
+  flex: 1 0 auto;
 `;
 
 export default Loader;
