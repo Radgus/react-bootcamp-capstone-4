@@ -52,7 +52,6 @@ const Section = styled.section`
   }
 `;
 
-
 const Logo = styled.img`
   height: 4rem;
 `;

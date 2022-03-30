@@ -3,10 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import ProductContext from './state/productContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ProductContext.Provider value={{products : [{
+          'amount': 2,
+          'product': {
+            'id': "YZWTvxIAACkAujoz",
+            'data': {
+              'name': "Bathrobe Disney Mickey Mouse",
+            },
+          },
+        }],
+      }}
+    >
+      <App />
+    </ProductContext.Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,7 +1,8 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import shoppingCarIcon from '../resources/images/shopping-icon-2.png';
 import { Link } from 'react-router-dom';
+import ProductContext from '../state/productContext';
 
 
 const Container = styled.div`
@@ -19,26 +20,17 @@ const Alert = styled.div`
   align-items: center;
 `;
 
-
 const Img = styled.img`
   height: 100%;
   cursor: pointer;
 `;
 
 const ShoppingIcon = () => {
-  // const [products, setProducts] = useState([]);
-  const [products, setProducts] = useState([
-    {
-      'amount': 2,
-      'product': {
-        'id': "YZWTvxIAACkAujoz",
-        'data': {
-          'name': "Bathrobe Disney Mickey Mouse",
-        },
-      },
-    },
+  const {products, addProducts} = useContext(ProductContext);
 
-  ]);
+  useEffect(()=>{
+    console.log('Context productos: ', products);
+  },[products]);
 
   return (
     <Container>
