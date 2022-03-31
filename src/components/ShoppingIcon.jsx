@@ -25,18 +25,34 @@ const Img = styled.img`
   cursor: pointer;
 `;
 
+const fakeObject2 = {
+  amount: 1,
+  product: {
+    id: "PUYTvxIAACkAujihy",
+    data: {
+      name: "Pink Mouse",
+    },
+  },
+}
+
 const ShoppingIcon = () => {
-  const {products, addProducts} = useContext(ProductContext);
+  const {products, setProduct} = useContext(ProductContext);
 
   useEffect(()=>{
     console.log('Context productos: ', products);
   },[products]);
 
+  const handleClick = () => {
+    const pt = [...products];
+    const one = pt.concat(fakeObject2);
+    setProduct(one);
+  };
+
   return (
     <Container>
       {
         products.length > 0
-        && <Alert>
+        && <Alert onClick={handleClick}>
             {products.length}
           </Alert>
       }
