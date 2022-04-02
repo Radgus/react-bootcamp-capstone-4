@@ -24,6 +24,7 @@ const Home = () => {
   useEffect(() => {
     if (fetchProducts !== null && fetchProducts !== undefined && fetchProducts.length > 0) {
       setProducts(fetchProducts);
+      // console.log('home products: ', fetchProducts);
     }
   }, [fetchProducts]);
 

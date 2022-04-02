@@ -7,25 +7,15 @@ import ProductDetail from './pages/ProductDetail';
 import Search from './pages/Search';
 import ShoppingCart from './pages/Shopping';
 import ProductContext from './state/productContext';
-
 import './App.css';
 
-const fakeObject = {
-    amount: 2,
-    product: {
-    id: "YZWTvxIAACkAujoz",
-    data: {
-      name: "Bathrobe Disney Mickey Mouse",
-    },
-  },
-}
 
 const App = () => {
-  const [products, setProduct] = useState([fakeObject]);
+  const [productsInCart, setProductsInCart] = useState([]);
   
   return (
     <ProductContext.Provider 
-      value={{ products, setProduct }}
+      value={{ productsInCart, setProductsInCart }}
     >
     <BrowserRouter>
       <Layout>

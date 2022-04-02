@@ -79,6 +79,7 @@ const ProductList = () => {
   }, [activeFilters,fetchProducts]);
 
   useEffect(() => {
+    // firstCall.pidirAlgo(url);
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -89,6 +90,10 @@ const ProductList = () => {
     }
     firstFetchProducts();
   }, []);
+
+  // useEffect(()=>{
+    // firstCall.pidirAlgo(url);
+  // },[url])
 
   const resetPageSelected = (id) => {
     for (let i = 0; i < firstCall?.data?.total_pages; i++) {
