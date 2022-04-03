@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 
 export const Amount = styled.div`
-  width: 40%;
+  /* width: 40%; */
   height: 5rem;
   border-radius: 1rem;
   color: deeppink;

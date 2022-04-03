@@ -1,13 +1,12 @@
 import React, {useEffect, useContext} from 'react';
 import styled from 'styled-components';
-import ProductCard from './components/ProductCard';
 import { Divider } from '../../components/Mix';
+import ShoppingCard from './components/ShoppingCard';
 import ProductContext from '../../state/productContext';
 
 
-
 const Container = styled.div`
-  margin: 0 8% 2rem;
+  margin: 0 3% 2rem;
   background-color: white;
   border-radius: 1rem;
   display: flex;
@@ -15,19 +14,26 @@ const Container = styled.div`
   flex: 1 0 auto;
 `;
 
-const TitleSection = styled.h1`
-  margin: 3rem 0;
+const TitleSection = styled.div`
+  margin: 1rem 0;
   padding: 0 3rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Wrapper = styled.div`
-  margin: 3rem 0;
-  padding: 0 3rem;
+  margin: 2rem 0;
+  padding: 0 1rem;
+  > * {
+   margin-top : 1rem;
+  }
+  > *:first-child {
+    margin-top: 0px;
+  }
 `;
 
-
 const ShoppingCart = () => {
-  const {productsInCart, setProductsInCart} = useContext(ProductContext);
+  const {productsInCart} = useContext(ProductContext);
 
   useEffect(()=>{
     console.log('Context productos: ', productsInCart);
@@ -35,7 +41,13 @@ const ShoppingCart = () => {
 
   return (
     <Container>
-      <TitleSection>Mis pedidos</TitleSection>
+      <TitleSection>
+        <h3>Mis pedidos</h3>
+        <h2>Total: $ {productsInCart.reduce((valorAnterior,valorActual)=>{
+                        return valorAnterior+(valorActual.amount * valorActual.product.data.price);
+                      },0)}
+        </h2>
+      </TitleSection>
       <Divider />
       <Wrapper>
         {
@@ -43,7 +55,11 @@ const ShoppingCart = () => {
           productsInCart.map(item=>{
             console.log('item.product: ', item.product);
             return(
-              <ProductCard key={item?.product?.id} product={item.product}/>
+              <ShoppingCard 
+                key={item?.product?.id} 
+                product={item.product} 
+                amount={item.amount}
+              />
             )
           }) 
         }
