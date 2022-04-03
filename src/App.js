@@ -7,6 +7,7 @@ import ProductDetail from './pages/ProductDetail';
 import Search from './pages/Search';
 import ShoppingCart from './pages/Shopping';
 import ProductContext from './state/productContext';
+import Checkout from './pages/Checkout';
 import './App.css';
 
 
@@ -26,6 +27,7 @@ const App = () => {
             <Route exac path='/product/:productId' element={<ProductDetail/>} />
             <Route exac path='/search' element={<Search/>} />
             <Route exac path='/cart' element={<ShoppingCart/>} />
+            <Route exac path='/checkout' element={<Checkout/>} />
           </Routes>
       </Layout>
     </BrowserRouter>
