@@ -1,5 +1,6 @@
 import React, {useEffect, useContext} from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Divider } from '../../components/Mix';
 import ShoppingCard from './components/ShoppingCard';
 import ProductContext from '../../state/productContext';
@@ -47,6 +48,9 @@ const ShoppingCart = () => {
                         return valorAnterior+(valorActual.amount * valorActual.product.data.price);
                       },0)}
         </h2>
+        <Link to='/checkout'>
+          <button type='button'>Checkout</button>
+        </Link>
       </TitleSection>
       <Divider />
       <Wrapper>

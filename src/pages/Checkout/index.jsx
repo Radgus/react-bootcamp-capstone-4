@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { DividerSpace } from '../../components/Mix';
+import ProductContext from '../../state/productContext';
 
 
 const Container = styled.div`
@@ -8,9 +10,9 @@ const Container = styled.div`
   flex-direction: column;
   flex: 1 0 auto;
   margin: 0 3% 2rem;
+  padding: 1rem;
   background-color: white;
   border-radius: 1rem;
-  padding: 1rem;
   
 `;
 
@@ -27,7 +29,7 @@ const Form = styled.div`
 // Input component INICIO
 
 const Layout = styled.div`
-  height: 5rem;
+  min-height: 5rem;
   border-radius: 0.5rem;
   /* box-shadow: 0.5rem 0.5rem black, -0.5rem -0.5rem #ccc; */
   /* border: 0.1rem solid gray; */
@@ -59,7 +61,12 @@ const Layout = styled.div`
     margin: 0.5rem 0;
     background-color: rgb(232, 240, 254);
   }
-  
+`;
+
+const Summary = styled.div`
+  margin: 1rem 0;
+  padding: 0 1rem;
+  border: 0.1rem solid gray;
 `;
 
 const Input = ({value, cb, label, type, name, placeholder}) => {
@@ -92,6 +99,13 @@ const Input = ({value, cb, label, type, name, placeholder}) => {
 
 // Input component FIN
 
+const SummaryButtons = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin: 1rem 0;
+  `;
+
+
 
 const Checkout = () => {
   const initalState = { 
@@ -101,6 +115,7 @@ const Checkout = () => {
     textarea: '',
   };
   const [form, setForm] = useState({...initalState});
+  const {productsInCart} = useContext(ProductContext);
   
   useEffect(()=>{
     console.log('form: ', form);
@@ -153,6 +168,45 @@ const Checkout = () => {
           />
           
       </Form>
+      <Summary>
+        <h3 style={{'textAlign':'center'}}>Order summary</h3>
+        <div>
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>No. products</th>
+              <th>Subtotal</th>
+            </tr>
+            {
+              productsInCart.length > 0 &&
+              productsInCart.map(item=>{
+                return(
+                  <tr>
+                    <td>{item.product.data.name}</td>
+                    <td>{item.amount}</td>
+                    <td>${item.product.data.price}</td>
+                  </tr>
+                );
+              })
+            }
+            <tr>
+              <td> </td>
+              <td><span>Total:</span></td>
+              <td>${productsInCart.reduce((valorAnterior,valorActual)=>{
+                        return valorAnterior+(valorActual.amount * valorActual.product.data.price);
+                      },0)}</td>
+            </tr>
+          </table>
+
+        </div>
+        <SummaryButtons>
+          <button>Place order</button>
+          <Link to='/cart'>
+            <button>Go back to cart</button>
+          </Link>
+        </SummaryButtons>
+      </Summary>
+
     </Container>
   );
 };
