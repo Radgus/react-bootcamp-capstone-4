@@ -14,7 +14,6 @@ const URL = 'https://wizeline-academy.cdn.prismic.io/api/v2/documents/search?ref
 
 
 const ProductList = () => {
-  const [isMenuCollapse,setIsMenuCollapse] = useState(false);
   const [activeFilters, setActiveFilters] = useState([]);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +22,6 @@ const ProductList = () => {
   const [fetchProducts, setFetchProducts] = useState([]);
   const [nextPage, setNextPage] = useState('');  
   const [previousPage, setPreviousPage] = useState(''); 
-  // const [totalPages, setTotalPages] = useState(1);
   let firstCall = useFetching(URL+1);  
 
   useEffect(() => {
@@ -91,9 +89,6 @@ const ProductList = () => {
     firstFetchProducts();
   }, []);
 
-  // useEffect(()=>{
-    // firstCall.pidirAlgo(url);
-  // },[url])
 
   const resetPageSelected = (id) => {
     for (let i = 0; i < firstCall?.data?.total_pages; i++) {
@@ -127,7 +122,6 @@ const ProductList = () => {
     resetPageSelected(page);
   }
 
-  const handleSidebar = () => setIsMenuCollapse(!isMenuCollapse);
 
   const handlerCheckbox = (e,id) => {
     const isActive = e.target.checked;
@@ -153,25 +147,19 @@ const ProductList = () => {
   }
   
   return (
-    <Container collapsed={isMenuCollapse}>
+    <Container>
 
       <div className="container__sidebar">
         <Sidebar>
-
-          <div className="sidebar__section" onClick={handleSidebar}>
-            <div className="sidebar__icon pointer">
-              <img src={categoryIcon} alt="Category Icon"/>
-            </div>
-            <p>Categories</p>
-          </div>
-          <Divider />
 
           <div className="sidebar__section">
             <div className="sidebar__icon">
               <img src={listIcon} alt="filter Icon"/>
             </div>
-            <p>List</p>
+            <p>Category list</p>
+            <ClearButton type='button' onClick={handleClearFilters}>Clear filters</ClearButton>
           </div>
+          <div className='sidebar__horizontal'>
           { 
             categoryList?.map((category) => {
               const id = category.id;
@@ -182,15 +170,13 @@ const ProductList = () => {
                       id={id} 
                       type="checkbox" 
                       onClick={(e) => handlerCheckbox(e,id)}
-                    />
+                      />
                   </div>
                   <label htmlFor={id}>{category.data.name}</label>
                 </div>
               );
             })
           }
-          <div className="sidebar__section">
-            <ClearButton type='button' onClick={handleClearFilters}>Clear filters</ClearButton>
           </div>
           <Divider />
           
@@ -198,9 +184,9 @@ const ProductList = () => {
             <div className="sidebar__icon">
               <img src={activeIcon} alt="filter Icon"/>
             </div>
-            <p>Actived</p>
+            <p>Activated filters</p>
           </div>
-
+          <div className='sidebar__horizontal'>
             { 
               activeFilters.length > 0 && activeFilters.map((category) => {
                 const id = category.id;
@@ -214,7 +200,7 @@ const ProductList = () => {
                 );
               })
             }
-
+          </div>
         </Sidebar>
       </div>
 
@@ -223,11 +209,6 @@ const ProductList = () => {
           isLoading
           ? <Loader/>
           : <>
-              {activeFilters?.length === 0 
-              ? <h1>All products</h1>
-              : <h1>Filters activated</h1>
-              }
-
               { products !== undefined &&
                 products?.length === 0
                 ? <NoProducts> <h3>There are no products</h3> </NoProducts> 

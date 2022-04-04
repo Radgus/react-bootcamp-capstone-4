@@ -11,6 +11,8 @@ const Loader = styled.div`
   border-radius: 50%;
   width: 120px;
   height: 120px;
+  max-width: 120px;
+  max-height: 120px;
   animation-name: ${spinerAnimation};
   animation-duration: 1s;
   animation-iteration-count: infinite;

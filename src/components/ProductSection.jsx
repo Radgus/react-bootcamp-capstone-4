@@ -22,6 +22,7 @@ const Product = styled.div`
   display: flex;
   flex-direction: column;
   background-color: white;
+  max-height: 23.5rem;
   .imageBox {
     width: 100%;
     height: 10rem;
