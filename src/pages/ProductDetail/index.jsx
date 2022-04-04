@@ -23,7 +23,7 @@ const ProductDetail = () => {
     }
   }, [fetchProducts, productId]);
 
-  const handleAddToCard = (e, item) => {
+  const handleAddToCard = (item) => {
     console.log('enviar al carrito: ', item);
     const obj = {
       amount: counter,
@@ -99,7 +99,7 @@ const ProductDetail = () => {
             </Amount>
             {
               product?.data?.stock !== 0 &&
-              <Buttom type="button" onClick={(e)=>handleAddToCard(e, product)}>Add to Cart</Buttom>
+              <Buttom type="button" onClick={()=>handleAddToCard(product)}>Add to Cart</Buttom>
             }
           </div>
         </Shopping>

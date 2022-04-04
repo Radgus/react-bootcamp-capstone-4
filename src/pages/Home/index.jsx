@@ -60,7 +60,7 @@ const Home = () => {
 
       <ProductSection productsList={products}/> 
 
-      <SectionTitle>
+      <SectionTitle style={{'marginBottom':'1rem'}}>
         <h1>Products</h1>
         <Link to="/products">
           <button type='button'>View all products</button>

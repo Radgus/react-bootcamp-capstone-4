@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import AddToCart from './AddToCart';
+import {DividerSpace} from './Mix';
+
 
 const Container = styled.div`
   display: flex;
@@ -12,8 +15,13 @@ const Container = styled.div`
 
 const Product = styled.div`
   width: 45%;
-  height: auto;
   margin: 1.2rem 0;
+  border: 0.1rem solid black;
+  border-radius: 1rem;
+  padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
   .imageBox {
     width: 100%;
     height: 10rem;
@@ -22,29 +30,29 @@ const Product = styled.div`
     align-items: center;
     cursor: pointer;
   }
-  img {
+  .img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     border-radius: 0.5rem;
   }
   .category {
-    padding-top: 0.6rem;
-    font-size: 1.5rem;
-    font-weight: 500;
+    padding-top: 0.5rem;
   }
   .title {
     padding-top: 0.5rem;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 400;
+    display: flex;
+    flex: 1 0 auto;
   }
   .price {
     padding-top: 0.5rem;
     font-size: 1.6rem;
     font-weight: 500;
-  }
-  .addCart :hover{
-    cursor: pointer;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
   }
   @media (min-width: 450px) {
     width: 30%;
@@ -57,7 +65,7 @@ const Product = styled.div`
   }
 `;
 
-const ProductSection = ({ productsList, handleAddCart }) => (
+const ProductSection = ({ productsList }) => (
   <Container>
     {productsList.map((item) => 
       <Product key={item.id}>
@@ -65,20 +73,19 @@ const ProductSection = ({ productsList, handleAddCart }) => (
           pathname: `/product/${item.id}`,
         }}>
           <div className="imageBox">
-            <img src={item.data.mainimage.url} alt={item.data.mainimage.alt} />
+            <img className='img' src={item.data.mainimage.url} alt={item.data.mainimage.alt} />
           </div>
         </Link>
-        <div>
-          <p className="category">{item.data.category.slug}</p>
+        <DividerSpace margin='0.5rem'/>
+        <div className='category'>
+          <p><b>Category: </b>{item.data.category.slug}</p>
         </div>
-        <div className="title">
+        <div className='title'>
           <p>{item.data.name}</p>
         </div>
-        <div className="price">
+        <div className='price'>
           <p>${item.data.price}</p>
-        </div>
-        <div className='addCart'>
-          <button type='button' onClick={() => handleAddCart(item.id)}><b>Add to cart</b></button>
+          <AddToCart product={item} icon={false}/>
         </div>
       </Product>
     )}

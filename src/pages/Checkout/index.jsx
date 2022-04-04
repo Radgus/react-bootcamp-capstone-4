@@ -16,7 +16,7 @@ const Container = styled.div`
   
 `;
 
-const Form = styled.div`
+const Form = styled.form`
   padding: 0 1rem;
   > * {
    margin-top : 1rem;
@@ -31,16 +31,12 @@ const Form = styled.div`
 const Layout = styled.div`
   min-height: 5rem;
   border-radius: 0.5rem;
-  /* box-shadow: 0.5rem 0.5rem black, -0.5rem -0.5rem #ccc; */
-  /* border: 0.1rem solid gray; */
   box-shadow: -0.3rem 0.3rem 0.5rem rgb(0 0 0 / 0.4);
   background-color: rgb(232, 240, 254);
   label {
     padding: 0 1rem;
-    /* margin: 0.5rem 0; */
     font-weight: 600;
     font-size: small;
-    /* height: 2.5rem; */
   }
   input {
     outline: none;
@@ -71,7 +67,7 @@ const Summary = styled.div`
   background-color: rgb(232, 240, 254);
 `;
 
-const Input = ({value, cb, label, type, name, placeholder}) => {
+const Input = ({name, label, value, type, cb, placeholder, maxlength, pattern='*'}) => {
 
   return(
     <Layout>
@@ -85,6 +81,7 @@ const Input = ({value, cb, label, type, name, placeholder}) => {
             placeholder={placeholder} 
             cols="30" 
             rows="4" 
+            maxLength={maxlength}
           />
         : <input 
             type={type}
@@ -92,6 +89,8 @@ const Input = ({value, cb, label, type, name, placeholder}) => {
             value={value}
             onChange={cb}
             placeholder={placeholder}
+            maxLength={maxlength}
+            pattern={pattern}
           />
       }
       
@@ -114,6 +113,9 @@ const Table = styled.table`
   th,td {
     width: 33%;
     text-align: center;
+  }
+  td {
+    padding: 0.3rem 0;
   }
 `;
 
@@ -141,11 +143,17 @@ const Checkout = () => {
     tmp[name] = value;
     setForm(tmp);
   }
+
+  const handleForm = (e) => {
+    e.preventDefault();
+    console.log('Enviar data del form',e);
+  }
+
   return(
     <Container>
       <h2 style={{'textAlign':'center'}}>Customer information</h2>
       <DividerSpace margin='1rem 0'/>
-      <Form action="">
+      <Form id='myform' onSubmit={handleForm}>
           <Input
             value={form.name}
             cb={handleInput}
@@ -153,6 +161,7 @@ const Checkout = () => {
             type='text'
             name='name'
             placeholder='Please write your name ...'
+            maxLength="50"
           />
           <Input
             value={form.email}
@@ -161,6 +170,8 @@ const Checkout = () => {
             type='email'
             name='email'
             placeholder='Please write your email ...'
+            maxLength="50"
+            pattern="\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b"
           />
           <Input
             value={form.pc}
@@ -169,6 +180,7 @@ const Checkout = () => {
             type='text'
             name='pc'
             placeholder='Please write your postal code ...'
+            maxLength="5"
           />
           <Input
             value={form.textarea}
@@ -177,6 +189,7 @@ const Checkout = () => {
             type='textarea'
             name='textarea'
             placeholder='Please write your order notes ...'
+            maxLength="250"
           />
           
       </Form>
@@ -196,7 +209,7 @@ const Checkout = () => {
                 productsInCart.length > 0 &&
                 productsInCart.map(item=>{
                   return(
-                    <tr>
+                    <tr key={item.product.id}>
                       <td>{item.product.data.name}</td>
                       <td>{item.amount}</td>
                       <td>${item.product.data.price}</td>
@@ -218,7 +231,7 @@ const Checkout = () => {
 
         </div>
         <SummaryButtons>
-          <button>Place order</button>
+          <button type='submit' form='myform'>Place order</button>
           <Link to='/cart'>
             <button>Go back to cart</button>
           </Link>
