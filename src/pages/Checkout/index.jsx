@@ -33,15 +33,16 @@ const Layout = styled.div`
   border-radius: 0.5rem;
   /* box-shadow: 0.5rem 0.5rem black, -0.5rem -0.5rem #ccc; */
   /* border: 0.1rem solid gray; */
+  box-shadow: -0.3rem 0.3rem 0.5rem rgb(0 0 0 / 0.4);
+  background-color: rgb(232, 240, 254);
   label {
     padding: 0 1rem;
-    color: blue;
+    /* margin: 0.5rem 0; */
     font-weight: 600;
     font-size: small;
-    height: 2rem;
+    /* height: 2.5rem; */
   }
   input {
-    box-shadow: -0.3rem 0.3rem 0.5rem rgb(0 0 0 / 0.4);
     outline: none;
     border-radius: 0.5rem;
     border: none;
@@ -52,7 +53,6 @@ const Layout = styled.div`
     background-color: rgb(232, 240, 254);
   }
   textarea {
-    box-shadow: -0.3rem 0.3rem 1rem rgb(0 0 0 / 0.4);
     outline: none;
     border-radius: 0.5rem;
     border: none;
@@ -64,9 +64,11 @@ const Layout = styled.div`
 `;
 
 const Summary = styled.div`
-  margin: 1rem 0;
+  margin: 2rem 1rem;
   padding: 0 1rem;
   border: 0.1rem solid gray;
+  border-radius: 1rem;
+  background-color: rgb(232, 240, 254);
 `;
 
 const Input = ({value, cb, label, type, name, placeholder}) => {
@@ -103,7 +105,17 @@ const SummaryButtons = styled.div`
   display: flex;
   justify-content: space-around;
   margin: 1rem 0;
-  `;
+`;
+
+const Table = styled.table`
+  width: 100%;
+  font-size: 1.3rem;
+  margin-top: 1rem;
+  th,td {
+    width: 33%;
+    text-align: center;
+  }
+`;
 
 
 
@@ -169,34 +181,40 @@ const Checkout = () => {
           
       </Form>
       <Summary>
-        <h3 style={{'textAlign':'center'}}>Order summary</h3>
+        <h2 style={{'textAlign':'center'}}>Order summary</h2>
         <div>
-          <table>
-            <tr>
-              <th>Name</th>
-              <th>No. products</th>
-              <th>Subtotal</th>
-            </tr>
-            {
-              productsInCart.length > 0 &&
-              productsInCart.map(item=>{
-                return(
-                  <tr>
-                    <td>{item.product.data.name}</td>
-                    <td>{item.amount}</td>
-                    <td>${item.product.data.price}</td>
-                  </tr>
-                );
-              })
-            }
-            <tr>
-              <td> </td>
-              <td><span>Total:</span></td>
-              <td>${productsInCart.reduce((valorAnterior,valorActual)=>{
+          <Table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>No. products</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                productsInCart.length > 0 &&
+                productsInCart.map(item=>{
+                  return(
+                    <tr>
+                      <td>{item.product.data.name}</td>
+                      <td>{item.amount}</td>
+                      <td>${item.product.data.price}</td>
+                    </tr>
+                  );
+                })
+              }
+            </tbody>
+            <tfoot>
+              <tr>
+                <td> </td>
+                <td><span>Total:</span></td>
+                <td>${productsInCart.reduce((valorAnterior,valorActual)=>{
                         return valorAnterior+(valorActual.amount * valorActual.product.data.price);
                       },0)}</td>
-            </tr>
-          </table>
+              </tr>
+            </tfoot>
+          </Table>
 
         </div>
         <SummaryButtons>
