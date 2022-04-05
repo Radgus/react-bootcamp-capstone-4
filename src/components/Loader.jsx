@@ -5,7 +5,7 @@ const spinerAnimation = keyframes`
   100% { transform: rotate(360deg); }
 `;
 
-const Spiner = styled.div`
+const Loader = styled.div`
   border: 16px solid #f3f3f3; /* Light grey */
   border-top: 16px solid #3498db; /* Blue */
   border-radius: 50%;
@@ -16,4 +16,4 @@ const Spiner = styled.div`
   animation-iteration-count: infinite;
 `;
 
-export default Spiner;
+export default Loader;

@@ -1,122 +1,128 @@
+/* eslint-disable max-len */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { Divider, DividerSpace } from '../../components/Mix';
 import categoryIcon from '../../resources/images/category-icon2.png';
 import activeIcon from '../../resources/images/active-icon.png';
 import listIcon from '../../resources/images/list-icon.png';
-import CategoryList from '../../utils/CategoryList';
-import productList from '../../utils/products';
 import ProductSection from '../../components/ProductSection';
-import Colors from '../../utils/colors';
-import Spiner from './components/Loader';
-
-
-const Container = styled.div`
-  display: flex;
-  margin-right: 8%;
-  .container__sidebar {
-    width: ${(props) => props.collapsed ? '4.25rem' : '36%'};
-    background-color: white;
-    overflow-y: hidden;
-  }
-  .container__content {
-    background-color: white;
-    padding: 1rem;
-    margin-left: 1rem;
-    width: -webkit-fill-available;
-  }
-`;
-
-const Sidebar = styled.section`
-  .sidebar__section {
-    display: flex;
-    align-items: center;
-  }
-  .sidebar__icon {
-    min-width: 4rem;
-    width: 4rem;
-    height: 5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    img {
-      width: 2.5rem;
-      height: 2.5rem;
-    }
-  }
-  .check {
-    height: 3rem;
-  }
-  .sidebar__bullet {
-    width: 0.6rem;
-    height: 0.6rem;
-    background-color: black;
-    border-radius: 50%;
-  }
-`;
-
-const Pagination = styled.section`
-  nav {
-    margin: 3rem 0 2rem 0;
-    display: flex;
-    justify-content: right;
-  }
-  a {
-    min-width: 2rem;
-    border: 0.2rem solid ${Colors['BG-C']};
-    cursor: pointer;
-    font-size: 1.8rem;
-    padding: 0.5rem 1.5rem;
-    text-decoration: none;
-    color: black;
-    border-radius: 0.5rem;
-    &:hover {
-      background-color: brown;
-      color: white;
-    }
-  }
-`;
-
-const NoProducts = styled.div`
-  height: 8rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+import { useFeaturedCategories } from '../../utils/hooks/useFeaturedCategories';
+import Loader from '../../components/Loader';
+import { Container, Sidebar, Pagination, NoProducts, ClearButton } from './styles';
+import { useFetching } from '../../utils/hooks/useFetch';
+const URL = 'https://wizeline-academy.cdn.prismic.io/api/v2/documents/search?ref=YZaBvBIAACgAvnOP&q=%5B%5Bat%28document.type%2C+%22product%22%29%5D%5D&pageSize=12&languageCode=en-us&page=';
 
 
 const ProductList = () => {
   const [isMenuCollapse,setIsMenuCollapse] = useState(false);
   const [activeFilters, setActiveFilters] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [pages, setPages] = useState([]);
+  const categoryList = useFeaturedCategories().data.results;
+  const [fetchProducts, setFetchProducts] = useState([]);
+  const [nextPage, setNextPage] = useState('');  
+  const [previousPage, setPreviousPage] = useState(''); 
+  // const [totalPages, setTotalPages] = useState(1);
+  let firstCall = useFetching(URL+1);  
 
   useEffect(() => {
-    setCategoryList([...CategoryList['results']]);
-    setProducts([...productList['results']]);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
+    const data = firstCall?.data;
+    const results = firstCall?.data?.results;
+    // setTotalPages(data.total_pages);
+    setNextPage(data.next_page);
+    setPreviousPage(data.prev_page);
+    if (results !== null && 
+      results !== undefined && 
+      results?.length > 0) {
+      setProducts(results);
+    }
+    if (Object.keys(data)?.length > 0) {
+      const numberOfPages = data['total_pages'];
+      for (let i = 0; i < numberOfPages; i++) {
+        setPages(pages=>pages.concat(<p id={i+1} className="pagination__number" key={i+1} onClick={()=>handleCounter(i+1)}> {i+1} </p>));
+      }
+    }
+  }, [firstCall]);
+
+  useEffect(() => {
+    const search  = window.location.search;
+    const params = new URLSearchParams(search);
+    const category = params.get('category');
+    if (category !== null && categoryList !== null && categoryList !== undefined && categoryList.length > 0 ) {
+      const categoryParams = category.split(',');
+
+      const filterSelected = categoryList.filter(item => 
+      item.slugs.length === categoryParams.length && 
+      item.slugs.every(element=> categoryParams.includes(element))
+      );
+      setActiveFilters(activeFilters => activeFilters.concat(filterSelected));
+      const filter = document.getElementById(filterSelected[0]['id']);
+      filter.checked = true;
+    }
+  }, [categoryList]);
 
   useEffect(() => {
     const categoryNames = [];
     activeFilters.forEach(element => {
-      categoryNames.push(element.data.name.toLowerCase());
+      element.slugs.forEach((slug)=>{
+        categoryNames.push(slug);
+      })
     });
-
-    if (categoryNames.length > 0) {
+    if (categoryNames?.length > 0) {
       // eslint-disable-next-line max-len
-      const newListProducts = productList['results'].filter( item => categoryNames.includes(item.data.category.slug));
+      const newListProducts = fetchProducts?.data?.results?.filter( item => categoryNames.includes(item.data.category.slug));
       setProducts(newListProducts);
     } else {
-      setProducts([...productList['results']]);
+      setProducts(fetchProducts?.data?.results);
     }
-  }, [activeFilters]);
+  }, [activeFilters,fetchProducts]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    const firstFetchProducts = async () => {
+      const response = await fetch(URL+1);
+      const data = await response.json();
+      setFetchProducts({ data, isLoading: false });
+    }
+    firstFetchProducts();
+  }, []);
+
+  const resetPageSelected = (id) => {
+    for (let i = 0; i < firstCall?.data?.total_pages; i++) {
+      const node = document.getElementById(i+1);
+      node.style.borderColor= '#DCDCDC';
+    }
+    const selected = document.getElementById(id);
+    selected.style.borderColor = 'red';
+  }
+
+  const  handleMovePage = async(move) => {
+    const urlFetch = move === 'next' ? nextPage : previousPage;
+    if (urlFetch !== null && urlFetch !== undefined && urlFetch !== '') {
+      const response = await fetch(urlFetch);
+      const data = await response.json();
+      setNextPage(data.next_page);
+      setPreviousPage(data.prev_page);
+      setFetchProducts({ data, isLoading: false });
+      const currentPage = data.page;
+      resetPageSelected(currentPage);
+    }
+  }
+
+  const  handleCounter = async (page) => {
+    const response = await fetch(URL+page);
+    const data = await response.json();
+    setNextPage(data.next_page);
+    setPreviousPage(data.prev_page);
+    setFetchProducts({ data, isLoading: false });
+    resetPageSelected(page);
+  }
 
   const handleSidebar = () => setIsMenuCollapse(!isMenuCollapse);
-  
+
   const handlerCheckbox = (e,id) => {
     const isActive = e.target.checked;
     if (isActive) {
@@ -127,6 +133,18 @@ const ProductList = () => {
       setActiveFilters(newActiveFilters);
     }
   }
+
+  const handleAddCart = (id) => {
+    console.log('Add to cart the item with id: ', id);
+  }
+
+  const handleClearFilters = () => {
+    activeFilters.forEach((filter) =>{
+      const checkInput = document.getElementById(filter['id']);
+      checkInput.checked = false;
+    });
+    setActiveFilters([]);
+  }
   
   return (
     <Container collapsed={isMenuCollapse}>
@@ -135,8 +153,8 @@ const ProductList = () => {
         <Sidebar>
 
           <div className="sidebar__section" onClick={handleSidebar}>
-            <div className="sidebar__icon">
-              <img src={categoryIcon} alt="filter Icon"/>
+            <div className="sidebar__icon pointer">
+              <img src={categoryIcon} alt="Category Icon"/>
             </div>
             <p>Categories</p>
           </div>
@@ -149,7 +167,7 @@ const ProductList = () => {
             <p>List</p>
           </div>
           { 
-            categoryList.map((category) => {
+            categoryList?.map((category) => {
               const id = category.id;
               return (
                 <div key={id} className="sidebar__section">
@@ -165,6 +183,9 @@ const ProductList = () => {
               );
             })
           }
+          <div className="sidebar__section">
+            <ClearButton type='button' onClick={handleClearFilters}>Clear filters</ClearButton>
+          </div>
           <Divider />
           
           <div className="sidebar__section">
@@ -192,37 +213,36 @@ const ProductList = () => {
       </div>
 
       <div className="container__content">
-        
         {
           isLoading
-          ? <Spiner/>
+          ? <Loader/>
           : <>
-              {activeFilters.length === 0 
+              {activeFilters?.length === 0 
               ? <h1>All products</h1>
               : <h1>Filters activated</h1>
               }
 
-              {
-                products.length === 0
+              { products !== undefined &&
+                products?.length === 0
                 ? <NoProducts> <h3>There are no products</h3> </NoProducts> 
-                : <ProductSection productsList={products} />
+                : <ProductSection productsList={products} handleAddCart={handleAddCart}/>
               }
             
               <DividerSpace/>
 
               <Pagination>
+                <div className="alfaOmega">
+                  <h3 onClick={()=>handleMovePage('previous')}>Previous</h3>
+                  <h3 onClick={()=>handleMovePage('next')}>Next</h3>
+                </div>
                 <nav>
-                  <a href="/productList" className="pagination__number">1</a>
-                  <a href="/productList" className="pagination__number">2</a>
-                  <a href="/productList" className="pagination__number">3</a>
-                  <a href="/productList" className="pagination__number">Next</a>
+                  {
+                    pages.length > 0 && pages.map(page => page)
+                  }
                 </nav>
               </Pagination>
           </>
         }
-        
-       
-
       </div>
 
     </Container>

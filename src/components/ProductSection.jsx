@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -6,6 +7,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 1rem;
+  flex: 1 0 auto;
 `;
 
 const Product = styled.div`
@@ -18,6 +20,7 @@ const Product = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
   }
   img {
     width: 100%;
@@ -40,6 +43,9 @@ const Product = styled.div`
     font-size: 1.6rem;
     font-weight: 500;
   }
+  .addCart :hover{
+    cursor: pointer;
+  }
   @media (min-width: 450px) {
     width: 30%;
   }
@@ -51,13 +57,17 @@ const Product = styled.div`
   }
 `;
 
-const ProductSection = ({ productsList }) => (
+const ProductSection = ({ productsList, handleAddCart }) => (
   <Container>
     {productsList.map((item) => 
       <Product key={item.id}>
-        <div className="imageBox">
-          <img src={item.data.mainimage.url} alt={item.data.mainimage.alt} />
-        </div>
+        <Link to={{
+          pathname: `/product/${item.id}`,
+        }}>
+          <div className="imageBox">
+            <img src={item.data.mainimage.url} alt={item.data.mainimage.alt} />
+          </div>
+        </Link>
         <div>
           <p className="category">{item.data.category.slug}</p>
         </div>
@@ -66,6 +76,9 @@ const ProductSection = ({ productsList }) => (
         </div>
         <div className="price">
           <p>${item.data.price}</p>
+        </div>
+        <div className='addCart'>
+          <button type='button' onClick={() => handleAddCart(item.id)}><b>Add to cart</b></button>
         </div>
       </Product>
     )}

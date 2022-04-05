@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import shoppingCarIcon from '../resources/images/shopping-icon-2.png';
@@ -72,8 +72,11 @@ const Search = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+    border-left: 1px solid gray;
     img {
       width: 2.5rem;
+      margin: 0 auto;
     }
   }
   input {
@@ -86,6 +89,11 @@ const Search = styled.div`
 `;
 
 const Header = () => {
+  const [searchInput, setSearchInput] = useState('');
+
+  const handleSearch = (e) => {
+    setSearchInput(e.target.value);
+  }
 
   return (
     <Section>
@@ -98,11 +106,17 @@ const Header = () => {
         </div>
 
         <div className="header__section search">
-           <Search>
-            <input type="text" placeholder='search...'/>
-            <div className="logo">
+          <Search>
+            <input type="text" placeholder='search...' onChange={handleSearch}/>
+            <Link
+              to= {{
+                pathname: "/search",
+                search: `?q=${searchInput}`,
+              }}
+              className="logo"
+            >
               <img src={searchIcon} alt="searchIcon" />
-            </div>
+            </Link>
           </Search>
         </div>
 
