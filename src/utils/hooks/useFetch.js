@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
 
 
-export function useFetching(url, array = []) {
+// export function useFetching(url, array = []) {
+export function useFetching(url) {
   const [featuredProducts, setFeaturedProducts] = useState(() => ({
     data: {},
     isLoading: true,
   }));
 
-  const pedirAlgo = async() => {
+  // const pedirAlgo = async() => {
     // aqui hacer el fetch
     // const response = await fetch.....
     // return response
-  }
+  // }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -44,7 +45,8 @@ export function useFetching(url, array = []) {
       }))
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url,...array]);
+}, [url]);
+  // }, [url,...array]);
 
   return featuredProducts;
   // return pedirAlgo();

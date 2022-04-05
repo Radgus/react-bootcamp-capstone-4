@@ -4,22 +4,26 @@ import { useFeaturedProducts } from "../../utils/hooks/useFeaturedProducts";
 import Gallery from "./Gallery";
 import ExpandCard from "./ExpandCard";
 import ProductContext from '../../state/productContext';
+import { useFetching } from '../../utils/hooks/useFetch';
 import {Container,Card,Wrapper,Title,Description,Shopping,Price,
   Span,Money,Buttom,Tags,Ul,Amount,Math} from './styles';
 
 
 const ProductDetail = () => {
   const [product, setProduct] = useState({});
-  const fetchProducts = useFeaturedProducts().data.results;
+  // const fetchProducts = useFeaturedProducts().data.results;
   const [counter, setCounter] = useState(1);
   const { productId } = useParams();
   const {productsInCart, setProductsInCart} = useContext(ProductContext);
+  // eslint-disable-next-line max-len
+  const productUrl = `https://wizeline-academy.cdn.prismic.io/api/v2/documents/search?ref=YZaBvBIAACgAvnOP&q=%5B%5B%3Ad+%3D+at%28document.id%2C+%22${productId}%22%29+%5D%5D`;
+  const fetchProducts = useFetching(productUrl).data.results;
+
 
   useEffect(() => {
     if (productId !== null && fetchProducts !== null && 
-        fetchProducts !== undefined && fetchProducts.length > 0 ) {
-      const productSelected = fetchProducts.filter(item => item.id === productId);
-      setProduct({...productSelected[0]});
+      fetchProducts !== undefined && fetchProducts.length > 0 ) {
+      setProduct({...fetchProducts[0]});
     }
   }, [fetchProducts, productId]);
 
