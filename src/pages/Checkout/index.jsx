@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { DividerSpace } from '../../components/Mix';
@@ -130,10 +130,6 @@ const Checkout = () => {
   };
   const [form, setForm] = useState({...initalState});
   const {productsInCart} = useContext(ProductContext);
-  
-  useEffect(()=>{
-    console.log('form: ', form);
-  },[form]);
 
   const handleInput = (e) => {
     const name = e.target.name;
@@ -146,7 +142,7 @@ const Checkout = () => {
 
   const handleForm = (e) => {
     e.preventDefault();
-    console.log('Enviar data del form',e);
+    console.log('Submit form',e);
   }
 
   return(

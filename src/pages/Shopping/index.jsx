@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, { useContext} from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Divider } from '../../components/Mix';
@@ -36,10 +36,6 @@ const Wrapper = styled.div`
 const ShoppingCart = () => {
   const {productsInCart} = useContext(ProductContext);
 
-  useEffect(()=>{
-    console.log('Context productos: ', productsInCart);
-  },[productsInCart]);
-
   return (
     <Container>
       <TitleSection>
@@ -56,16 +52,13 @@ const ShoppingCart = () => {
       <Wrapper>
         {
           productsInCart.length > 0 && 
-          productsInCart.map(item=>{
-            console.log('item.product: ', item.product);
-            return(
-              <ShoppingCard 
-                key={item?.product?.id} 
-                product={item.product} 
-                amount={item.amount}
-              />
-            )
-          }) 
+          productsInCart.map(item=>(
+            <ShoppingCard 
+              key={item?.product?.id} 
+              product={item.product} 
+              amount={item.amount}
+            />
+          ))
         }
       </Wrapper>
 

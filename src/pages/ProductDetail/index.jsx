@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext} from "react";
 import { useParams } from "react-router-dom";
-import { useFeaturedProducts } from "../../utils/hooks/useFeaturedProducts";
 import Gallery from "./Gallery";
 import ExpandCard from "./ExpandCard";
 import ProductContext from '../../state/productContext';
@@ -28,7 +27,6 @@ const ProductDetail = () => {
   }, [fetchProducts, productId]);
 
   const handleAddToCard = (item) => {
-    console.log('enviar al carrito: ', item);
     const obj = {
       amount: counter,
       product: item,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import shoppingCarIcon from '../resources/images/shopping-icon-2.png';
 import { Link } from 'react-router-dom';
@@ -26,7 +26,7 @@ const Img = styled.img`
 `;
 
 const ShoppingIcon = () => {
-  const {productsInCart, setProductsInCart} = useContext(ProductContext);
+  const { productsInCart } = useContext(ProductContext);
 
   return (
     <Container>

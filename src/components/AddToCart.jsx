@@ -23,7 +23,6 @@ const AddToCart = ({product, amount=1, icon=false}) => {
   const {productsInCart, setProductsInCart} = useContext(ProductContext);
 
   const handleAddToCard = (item) => {
-    console.log('enviar al carrito: ', item);
     const obj = {
       amount: amount,
       product: item,

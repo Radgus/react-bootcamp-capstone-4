@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { Divider, DividerSpace } from '../../components/Mix';
-import categoryIcon from '../../resources/images/category-icon2.png';
 import activeIcon from '../../resources/images/active-icon.png';
 import listIcon from '../../resources/images/list-icon.png';
 import ProductSection from '../../components/ProductSection';
@@ -122,7 +121,6 @@ const ProductList = () => {
     resetPageSelected(page);
   }
 
-
   const handlerCheckbox = (e,id) => {
     const isActive = e.target.checked;
     if (isActive) {
@@ -132,10 +130,6 @@ const ProductList = () => {
       const newActiveFilters = activeFilters.filter(item => item.id !== id);
       setActiveFilters(newActiveFilters);
     }
-  }
-
-  const handleAddCart = (id) => {
-    console.log('Add to cart the item with id: ', id);
   }
 
   const handleClearFilters = () => {
@@ -212,7 +206,7 @@ const ProductList = () => {
               { products !== undefined &&
                 products?.length === 0
                 ? <NoProducts> <h3>There are no products</h3> </NoProducts> 
-                : <ProductSection productsList={products} handleAddCart={handleAddCart}/>
+                : <ProductSection productsList={products}/>
               }
             
               <DividerSpace/>

@@ -15,7 +15,6 @@ const ShoppingCard = ({ product, amount }) => {
     const index = productsInCart.findIndex((item)=>
       item.product.id === product.id
     );
-    console.log('id productsInCart: ', index);
     const temporalCopy = [...productsInCart];
     temporalCopy[index].amount = counter;
     setProductsInCart(temporalCopy);
