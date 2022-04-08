@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext} from "react";
 import { useParams } from "react-router-dom";
-import Gallery from "./Gallery";
-import ExpandCard from "./ExpandCard";
+import Gallery from "./components/Gallery";
+import ExpandCard from "./components/ExpandCard";
 import ProductContext from '../../state/productContext';
 import { useFetching } from '../../utils/hooks/useFetch';
 import {Container,Card,Wrapper,Title,Description,Shopping,Price,

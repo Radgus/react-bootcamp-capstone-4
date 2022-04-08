@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 
 export const Amount = styled.div`
-  /* width: 40%; */
   height: 5rem;
   border-radius: 1rem;
   color: deeppink;
@@ -81,5 +81,12 @@ const QuantitySelector = ({stock, counter, setCounter}) => {
     </Amount>
   )
 }
+
+QuantitySelector.propTypes = {
+  stock: PropTypes.number,
+  counter: PropTypes.number,
+  setCounter: PropTypes.func,
+}
+
 
 export default QuantitySelector;

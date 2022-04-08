@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AddToCart from './AddToCart';
 import {DividerSpace} from './Mix';
+import PropTypes from 'prop-types';
 
 
 const Container = styled.div`
@@ -92,5 +93,10 @@ const ProductSection = ({ productsList }) => (
     )}
   </Container>
 );
+
+ProductSection.propTypes = {
+  productsList: PropTypes.array,
+}
+
 
 export default ProductSection;

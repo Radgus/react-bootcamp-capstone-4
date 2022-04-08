@@ -1,6 +1,7 @@
 import React, { useContext} from 'react';
 import styled from 'styled-components';
 import ProductContext from '../state/productContext';
+import PropTypes from 'prop-types';
 
 
 export const Buttom = styled.button`
@@ -44,5 +45,12 @@ const AddToCart = ({product, amount=1, icon=false}) => {
     </Buttom>
   )
 }
+
+AddToCart.propTypes = {
+  product: PropTypes.object,
+  amount: PropTypes.number,
+  icon: PropTypes.bool,
+}
+
 
 export default AddToCart;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types'
 
 const ExpandContainer = styled.div`
   padding: 1rem 2rem;
@@ -82,6 +83,10 @@ const ExpandCard = ({product}) => {
       </div>
     </ExpandContainer>
   );
+}
+
+ExpandCard.propTypes = {
+  product: PropTypes.object,
 }
 
 export default ExpandCard;

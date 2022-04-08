@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types'
 
 
  const Main = styled.div`
@@ -44,16 +45,12 @@ import styled from 'styled-components';
   }
   `;
 
-
-
 const Gallery = ({product}) => {
   const [position, setPosition] = useState(0);
 
   const handleImage = (index) => {
     setPosition(index);
   }
-
-  
 
   return(
     <>
@@ -77,4 +74,8 @@ const Gallery = ({product}) => {
   )
 }
 
-export default Gallery
+Gallery.propTypes = {
+  product: PropTypes.object,
+}
+
+export default Gallery;

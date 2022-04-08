@@ -5,6 +5,7 @@ import trashIcon from '../../../resources/images/trash-icon.png';
 import { Container, ContainerHeader, TrashIcon, 
 ContainerItemSection, ImgContainer, Img, DataSection,
 Summary, Concept } from './ShoppingCardStyles';
+import PropTypes from 'prop-types';
 
 
 const ShoppingCard = ({ product, amount }) => {
@@ -73,6 +74,11 @@ const ShoppingCard = ({ product, amount }) => {
       </ContainerItemSection>
     </Container>
   );
+}
+
+ShoppingCard.propTypes = {
+  product: PropTypes.object,
+  amount: PropTypes.number,
 }
 
 export default ShoppingCard;
