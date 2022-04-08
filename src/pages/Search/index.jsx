@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ProductSection from '../../components/ProductSection';
 import Loader from '../../components/Loader';
+import LoaderHOC from '../../components/LoaderHOC';
 import { DividerSpace } from '../../components/Mix';
 import Pagination from '../../components/Pagination';
 
@@ -121,7 +122,7 @@ const Search = () => {
       <h1>Search Result Page</h1>
       {
         isLoading
-        ? <Loader/>
+        ? <LoaderHOC Component={Loader} spead={'0.5s'}/>
         : products.length > 0
           ? <ProductSection productsList={products}/>
           : <H3>There are no results matching the searchTerm.</H3> 
@@ -129,6 +130,7 @@ const Search = () => {
       <DividerSpace/>
 
       <Pagination>
+        <>
         <div className="alfaOmega">
           <h3 onClick={()=>handleMovePage('previous')}>Previous</h3>
           <h3 onClick={()=>handleMovePage('next')}>Next</h3>
@@ -138,6 +140,7 @@ const Search = () => {
             pages.length > 0 && pages.map(page => page)
           }
         </nav>
+        </>
       </Pagination>
 
     </Container>

@@ -49,8 +49,8 @@ const Pagination = ({children}) => {
   )
 }
 
-Pagination.propTypes = {
-  children: PropTypes.element,
-}
+// Pagination.propTypes = {
+//   children: PropTypes.element,
+// }
 
 export default Pagination;

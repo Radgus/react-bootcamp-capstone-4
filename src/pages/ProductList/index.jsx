@@ -7,6 +7,7 @@ import listIcon from '../../resources/images/list-icon.png';
 import ProductSection from '../../components/ProductSection';
 import { useFeaturedCategories } from '../../utils/hooks/useFeaturedCategories';
 import Loader from '../../components/Loader';
+import LoaderHOC from '../../components/LoaderHOC';
 import { Container, Sidebar, Pagination, NoProducts, ClearButton } from './styles';
 import { useFetching } from '../../utils/hooks/useFetch';
 const URL = 'https://wizeline-academy.cdn.prismic.io/api/v2/documents/search?ref=YZaBvBIAACgAvnOP&q=%5B%5Bat%28document.type%2C+%22product%22%29%5D%5D&pageSize=12&languageCode=en-us&page=';
@@ -201,7 +202,7 @@ const ProductList = () => {
       <div className="container__content">
         {
           isLoading
-          ? <Loader/>
+          ? <LoaderHOC Component={Loader} spead={'5s'}/>
           : <>
               { products !== undefined &&
                 products?.length === 0

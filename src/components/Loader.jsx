@@ -1,11 +1,12 @@
 import styled, { keyframes } from 'styled-components';
+import PropTypes from 'prop-types';
 
 const spinerAnimation = keyframes`
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 `;
 
-const Loader = styled.div`
+const Spiner = styled.div`
   border: 16px solid #f3f3f3; /* Light grey */
   border-top: 16px solid #3498db; /* Blue */
   border-radius: 50%;
@@ -14,10 +15,19 @@ const Loader = styled.div`
   max-width: 120px;
   max-height: 120px;
   animation-name: ${spinerAnimation};
-  animation-duration: 1s;
+  animation-duration:  ${(props) => props.spead ? props.spead : '1s'};
+  /* animation-duration: 1s; */
   animation-iteration-count: infinite;
   display: flex;
   flex: 1 0 auto;
 `;
+
+const Loader = ({spead}) => (
+  <Spiner spead={spead}/>
+);
+
+Loader.propTypes = {
+  spead: PropTypes.string,
+}
 
 export default Loader;
