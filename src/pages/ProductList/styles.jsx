@@ -3,55 +3,59 @@ import Colors from '../../utils/colors';
 
 
 export const Container = styled.div`
+  margin: 0 5%;
   display: flex;
-  margin-right: 8%;
+  flex-direction: column;
   flex: 1 0 auto;
 .container__sidebar {
-  width: ${(props) => props.collapsed ? '4.25rem' : '36%'};
   background-color: white;
-  overflow-y: hidden;
+  border-radius: 1rem;
 }
 .container__content {
-  background-color: white;
   padding: 1rem;
   margin-left: 1rem;
-  width: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
 }
 `;
 
 export const Sidebar = styled.section`
-.sidebar__section {
-  display: flex;
-  align-items: center;
-}
-.sidebar__icon {
-  min-width: 4rem;
-  width: 4rem;
-  height: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  img {
-    width: 2.5rem;
-    height: 2.5rem;
+  .sidebar__horizontal {
+    display: flex;
+    flex-wrap: wrap;
   }
-}
-.check {
-  height: 3rem;
-}
-.pointer {
-  cursor: pointer;
-}
-.sidebar__bullet {
-  width: 0.6rem;
-  height: 0.6rem;
-  background-color: black;
-  border-radius: 50%;
-}
+  .sidebar__section {
+    display: flex;
+    align-items: center;
+  }
+  .sidebar__icon {
+    min-width: 4rem;
+    width: 4rem;
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+  .check {
+    height: 3rem;
+  }
+  .pointer {
+    cursor: pointer;
+  }
+  .sidebar__bullet {
+    width: 0.6rem;
+    height: 0.6rem;
+    background-color: black;
+    border-radius: 50%;
+  }
 `;
 
 export const Pagination = styled.section`
-width: 40rem;
 .alfaOmega {
   text-align: center;
   display: flex;
@@ -68,7 +72,6 @@ width: 40rem;
 nav {
   padding: 3rem 0 2rem 0;
   display: flex;
-  width: 30rem;
   overflow-x: auto;
   scroll-behavior: smooth;
   margin: 0 auto;
@@ -98,14 +101,15 @@ export const NoProducts = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 1 0 auto;
 `;
 
 export const ClearButton = styled.button`
-  margin: 0.5rem auto;
+  margin: 0 2rem 0 auto;
   cursor: pointer;
   background-color: sandybrown;
   border-radius: 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   border: 0;
-  padding: 0.8rem;
+  padding: 0.6rem 0.8rem;
 `;

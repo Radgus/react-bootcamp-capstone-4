@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types'
 
 const Slider = styled.div`
   position: relative;
@@ -78,5 +79,10 @@ const SliderSection = ({handleSlider, featuredBanners}) => (
     </SliderButton>
   </Slider>
 );
+
+SliderSection.propTypes = {
+  handleSlider: PropTypes.func,
+  featuredBanners: PropTypes.array,
+}
 
 export default SliderSection;

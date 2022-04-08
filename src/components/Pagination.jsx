@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.section`
-width: 40rem;
 .alfaOmega {
   text-align: center;
   display: flex;
@@ -18,7 +17,6 @@ width: 40rem;
 nav {
   padding: 3rem 0 2rem 0;
   display: flex;
-  width: 30rem;
   overflow-x: auto;
   scroll-behavior: smooth;
   margin: 0 auto;

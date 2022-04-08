@@ -6,7 +6,7 @@ export const Divider = styled.div`
 `;
 
 export const DividerSpace = styled(Divider)`
-  margin: 2rem 0;
+  margin: ${(props) => props.margin ? props.margin : '2rem 0'};
 `;
 
 export const Main = styled.main`
