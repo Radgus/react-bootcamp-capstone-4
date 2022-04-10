@@ -18,6 +18,7 @@ const SliderButton = styled.div`
   bottom: 50%;
   right: ${(props) => props.isRight ? 0 : 'none'};
   z-index: 10;
+  cursor: pointer;
   .arrow {
     width: 1.5rem;
     height: 1.5rem;

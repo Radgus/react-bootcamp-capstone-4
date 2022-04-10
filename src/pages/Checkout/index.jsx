@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { DividerSpace } from '../../components/Mix';
 import ProductContext from '../../state/productContext';
-import { useForm } from "react-hook-form";
+import FormSection from './components/FormSection';
 
 
 const Container = styled.div`
@@ -18,48 +18,7 @@ const Container = styled.div`
 
 const Main = ({children, ...props}) => <Container {...props}>{children}</Container>;
 
-const FormContainer = styled.form`
-  padding: 1rem;
-  background-color: #DCDCDC;
-  border-radius: 1rem;
-  display: flex;
-  flex-direction: column;
-  > * {
-   margin-top : 1rem;
-  }
-  > *:first-child {
-    margin-top: 0px;
-  }
-`;
-
-const Form = ({children, ...props}) => <FormContainer {...props}>{children}</FormContainer>
-
-const Input = styled.input`
-  outline: none;
-  border: none;
-  height: 2.5rem;
-  border-radius: 0.5rem;
-  padding: 0 1rem;
-`;
-
-const LabelContainer = styled.label`
-  font-weight: 600;
-  padding: 0 1rem;
-  font-family: sans-serif;
-`;
-
-const Label = ({children, ...props}) => <LabelContainer {...props}>{children}</LabelContainer>
-
-const RedAlert = styled.p`
-  color: darkmagenta;
-  margin: 0.4rem 0;
-  padding: 0 1rem;
-  font-family: cursive;
-`;
-
-const ValidateAlert = ({children, ...props}) => <RedAlert {...props}>{children}</RedAlert>
-
-const Summary = styled.div`
+const SummaryContainer = styled.div`
   margin: 2rem 1rem;
   padding: 0 1rem;
   border: 0.1rem solid gray;
@@ -67,13 +26,19 @@ const Summary = styled.div`
   background-color: rgb(232, 240, 254);
 `;
 
-const SummaryButtons = styled.div`
+const Summary = ({children, ...props}) => 
+<SummaryContainer {...props}>{children}</SummaryContainer>;
+
+const SummaryButtonsContainer = styled.div`
   display: flex;
   justify-content: space-around;
   margin: 1rem 0;
 `;
 
-const Table = styled.table`
+const SummaryButtons = ({children, ...props}) => 
+<SummaryButtonsContainer {...props}>{children}</SummaryButtonsContainer>;
+
+const TableContainer = styled.table`
   width: 100%;
   font-size: 1.3rem;
   margin-top: 1rem;
@@ -86,34 +51,20 @@ const Table = styled.table`
   }
 `;
 
+const Table = ({children, ...props}) => <TableContainer {...props}>{children}</TableContainer>;
 
-Main.Form = Form;
-Main.Input = Input;
-Main.Label = Label;
-Main.ValidateAlert = ValidateAlert;
+Main.FormSection = FormSection;
+
 
 const Checkout = () => {
   const {productsInCart} = useContext(ProductContext);
-  const { register, handleSubmit,  formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
-  console.log(errors);
 
   return(
     <Main>
       <h2 style={{'textAlign':'center'}}>Customer information</h2>
       <DividerSpace margin='1rem 0'/>
-      <Main.Form id='myform' onSubmit={handleSubmit(onSubmit)}>
-        <Main.Label >First Name</Main.Label>
-        <Main.Input 
-          type="text" 
-          placeholder="First name"
-          {...register("firstName", {required: true, maxLength: 20})} 
-        />
-        {errors.firstName?.type === 'required' && 
-          <Main.ValidateAlert>First name is required</Main.ValidateAlert>
-        }
-        <input type="submit" />
-      </Main.Form>
+      <Main.FormSection />
+      
       <Summary>
         <h2 style={{'textAlign':'center'}}>Order summary</h2>
         <div>

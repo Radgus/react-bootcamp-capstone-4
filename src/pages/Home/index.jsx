@@ -58,7 +58,7 @@ const Home = () => {
       <CategorySection categoryList={featuredCategories}/>
       
       <SectionTitle>
-        <h1>Products</h1>
+        <h1>Featured Products</h1>
       </SectionTitle>
 
       <ProductSection productsList={products}/> 
