@@ -1,8 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { DividerSpace } from '../../components/Mix';
 import ProductContext from '../../state/productContext';
+import { useForm } from "react-hook-form";
 
 
 const Container = styled.div`
@@ -13,11 +14,16 @@ const Container = styled.div`
   padding: 1rem;
   background-color: white;
   border-radius: 1rem;
-  
 `;
 
-const Form = styled.form`
-  padding: 0 1rem;
+const Main = ({children, ...props}) => <Container {...props}>{children}</Container>;
+
+const FormContainer = styled.form`
+  padding: 1rem;
+  background-color: #DCDCDC;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
   > * {
    margin-top : 1rem;
   }
@@ -26,38 +32,32 @@ const Form = styled.form`
   }
 `;
 
-// Input component INICIO
+const Form = ({children, ...props}) => <FormContainer {...props}>{children}</FormContainer>
 
-const Layout = styled.div`
-  min-height: 5rem;
+const Input = styled.input`
+  outline: none;
+  border: none;
+  height: 2.5rem;
   border-radius: 0.5rem;
-  box-shadow: -0.3rem 0.3rem 0.5rem rgb(0 0 0 / 0.4);
-  background-color: rgb(232, 240, 254);
-  label {
-    padding: 0 1rem;
-    font-weight: 600;
-    font-size: small;
-  }
-  input {
-    outline: none;
-    border-radius: 0.5rem;
-    border: none;
-    height: 2.5rem;
-    padding: 0 1rem;
-    width: 100%;
-    margin: 0.5rem 0;
-    background-color: rgb(232, 240, 254);
-  }
-  textarea {
-    outline: none;
-    border-radius: 0.5rem;
-    border: none;
-    padding: 1rem;
-    width: 100%;
-    margin: 0.5rem 0;
-    background-color: rgb(232, 240, 254);
-  }
+  padding: 0 1rem;
 `;
+
+const LabelContainer = styled.label`
+  font-weight: 600;
+  padding: 0 1rem;
+  font-family: sans-serif;
+`;
+
+const Label = ({children, ...props}) => <LabelContainer {...props}>{children}</LabelContainer>
+
+const RedAlert = styled.p`
+  color: darkmagenta;
+  margin: 0.4rem 0;
+  padding: 0 1rem;
+  font-family: cursive;
+`;
+
+const ValidateAlert = ({children, ...props}) => <RedAlert {...props}>{children}</RedAlert>
 
 const Summary = styled.div`
   margin: 2rem 1rem;
@@ -66,39 +66,6 @@ const Summary = styled.div`
   border-radius: 1rem;
   background-color: rgb(232, 240, 254);
 `;
-
-const Input = ({name, label, value, type, cb, placeholder, maxlength, pattern='*'}) => {
-
-  return(
-    <Layout>
-      <label htmlFor={name}>{label}</label>
-      {
-        type === 'textarea' 
-        ? <textarea 
-            name={name}
-            value={value}
-            onChange={cb}
-            placeholder={placeholder} 
-            cols="30" 
-            rows="4" 
-            maxLength={maxlength}
-          />
-        : <input 
-            type={type}
-            name={name}
-            value={value}
-            onChange={cb}
-            placeholder={placeholder}
-            maxLength={maxlength}
-            pattern={pattern}
-          />
-      }
-      
-    </Layout>
-  );
-};
-
-// Input component FIN
 
 const SummaryButtons = styled.div`
   display: flex;
@@ -120,75 +87,33 @@ const Table = styled.table`
 `;
 
 
+Main.Form = Form;
+Main.Input = Input;
+Main.Label = Label;
+Main.ValidateAlert = ValidateAlert;
 
 const Checkout = () => {
-  const initalState = { 
-    name: '',
-    email: '',
-    pc: '',
-    textarea: '',
-  };
-  const [form, setForm] = useState({...initalState});
   const {productsInCart} = useContext(ProductContext);
-
-  const handleInput = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-
-    const tmp = {...form};
-    tmp[name] = value;
-    setForm(tmp);
-  }
-
-  const handleForm = (e) => {
-    e.preventDefault();
-    console.log('Submit form',e);
-  }
+  const { register, handleSubmit,  formState: { errors } } = useForm();
+  const onSubmit = data => console.log(data);
+  console.log(errors);
 
   return(
-    <Container>
+    <Main>
       <h2 style={{'textAlign':'center'}}>Customer information</h2>
       <DividerSpace margin='1rem 0'/>
-      <Form id='myform' onSubmit={handleForm}>
-          <Input
-            value={form.name}
-            cb={handleInput}
-            label='Name'
-            type='text'
-            name='name'
-            placeholder='Please write your name ...'
-            maxLength="50"
-          />
-          <Input
-            value={form.email}
-            cb={handleInput}
-            label='Email'
-            type='email'
-            name='email'
-            placeholder='Please write your email ...'
-            maxLength="50"
-            pattern="\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b"
-          />
-          <Input
-            value={form.pc}
-            cb={handleInput}
-            label='Postal Code'
-            type='text'
-            name='pc'
-            placeholder='Please write your postal code ...'
-            maxLength="5"
-          />
-          <Input
-            value={form.textarea}
-            cb={handleInput}
-            label='Order notes'
-            type='textarea'
-            name='textarea'
-            placeholder='Please write your order notes ...'
-            maxLength="250"
-          />
-          
-      </Form>
+      <Main.Form id='myform' onSubmit={handleSubmit(onSubmit)}>
+        <Main.Label >First Name</Main.Label>
+        <Main.Input 
+          type="text" 
+          placeholder="First name"
+          {...register("firstName", {required: true, maxLength: 20})} 
+        />
+        {errors.firstName?.type === 'required' && 
+          <Main.ValidateAlert>First name is required</Main.ValidateAlert>
+        }
+        <input type="submit" />
+      </Main.Form>
       <Summary>
         <h2 style={{'textAlign':'center'}}>Order summary</h2>
         <div>
@@ -219,8 +144,8 @@ const Checkout = () => {
                 <td> </td>
                 <td><span>Total:</span></td>
                 <td>${productsInCart.reduce((valorAnterior,valorActual)=>{
-                        return valorAnterior+(valorActual.amount * valorActual.product.data.price);
-                      },0)}</td>
+                  return valorAnterior+(valorActual.amount * valorActual.product.data.price);
+                },0)}</td>
               </tr>
             </tfoot>
           </Table>
@@ -233,8 +158,8 @@ const Checkout = () => {
           </Link>
         </SummaryButtons>
       </Summary>
-
-    </Container>
+   
+    </Main>
   );
 };
 
