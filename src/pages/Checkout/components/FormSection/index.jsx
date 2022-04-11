@@ -2,9 +2,9 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import styled from 'styled-components';
 import { firstNameError, emailError, pcError, notesError } from './errorConfig';
-import Form from './Form';
-import Label from './Label';
-import ValidateAlert from './ValidateAlert';
+import Form from './components/Form';
+import Label from './components/Label';
+import ValidateAlert from './components/ValidateAlert';
 
 
 const Input = styled.input`
